@@ -71,7 +71,7 @@ for sample in samples:
 #	BaseQualityRecalibration
 #	Step 1: First run of BQSR: BaseRecalibrator
 ####################
-    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T BaseRecalibrator ', 'I' + jp(bamFolder, sample) + '.bam', ' -knownSites ' knownSites,
+    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T BaseRecalibrator ', ' -I ' + jp(bamFolder, sample) + '.bam', ' -knownSites ' + knownSites,
     ' -o ' + jp(bamFolder, sample) + '_BQSR.table', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
