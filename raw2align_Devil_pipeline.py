@@ -2,6 +2,10 @@
 #import argparse
 #from glob import glob
 
+#-s /mnt/lfs2/hend6746/devils/samples.txt
+#-r /mnt/lfs2/hend6746/devils/fastqFiles_160916/00-RawData
+#-b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa
+
 from os.path import join as jp
 from os.path import abspath
 import os
@@ -29,7 +33,7 @@ def log(txt, out):
 samples = []
 for l in open(args.samples):
     if len(l) > 1:
-        samples.append(l.split('/')[-1].replace('_R1_001.fastq.gz', '').strip())
+        samples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
 
 
 # Setup folders and paths variables:
@@ -71,8 +75,8 @@ for sample in samples:
 
     # First run superdeduper
     # David said don't run the compression (16Sep21)
-    cmd = ' '.join(['super_deduper -1', jp(rawdataDir, sample + '_R1_001.fastq.gz'),
-                    '-2', jp(rawdataDir, sample + '_R2_001.fastq.gz'), '-p', jp(resultsDir, sample + '_sd'),
+    cmd = ' '.join(['super_deduper -1', jp(rawdataDir, sample + '.fastq.1.gz'),
+                    '-2', jp(rawdataDir, sample + '.fastq.2.gz'), '-p', jp(resultsDir, sample + '_sd'),
                     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     #os.system(cmd)
