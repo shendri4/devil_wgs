@@ -2,9 +2,9 @@
 #import argparse
 #from glob import glob
 
-#--s test_samples.txt
-#--b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa
-#--k /mnt/lfs2/hend6746/taz/filtered_plink_files/export_data_150907
+#-s test_samples.txt
+#-b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa
+#-k /mnt/lfs2/hend6746/taz/filtered_plink_files/export_data_150907/seventy.1-2.nodoubletons.noparalogs.noX.plink.oneperlocus.vcf
 
 from os.path import join as jp
 from os.path import abspath
@@ -71,8 +71,7 @@ for sample in samples:
 #	BaseQualityRecalibration
 #	Step 1: First run of BQSR: BaseRecalibrator
 ####################
-    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T BaseRecalibrator ', 'I' + jp(bamFolder, sample) + '.bam',
-    ' -knownSites ' knownSites,
+    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T BaseRecalibrator ', 'I' + jp(bamFolder, sample) + '.bam', ' -knownSites ' knownSites,
     ' -o ' + jp(bamFolder, sample) + '_BQSR.table', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
