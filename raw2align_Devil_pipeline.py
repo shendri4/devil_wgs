@@ -6,6 +6,11 @@
 #-r /mnt/lfs2/hend6746/devils/fastqFiles_160916/00-RawData
 #-b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa
 
+#bwa index -a bwtsw sarHar1.fa (takes awhile)
+#samtools faidx sarHar1.fa
+#java -jar /mnt/lfs2/hend6746/modules/picard-tools/1.115/CreateSequenceDictionary.jar REFERENCE=sarHar1.fa OUTPUT=sarHar1.dict 
+
+
 from os.path import join as jp
 from os.path import abspath
 import os
@@ -66,7 +71,7 @@ for sample in samples:
     log('#PBS -m abe', logCommands)
     log('#PBS -M shendri4@gmail.com', logCommands)
     log('#PBS -q short', logCommands)
-    log('#PBS -l mem=100000', logCommands)
+    log('#PBS -l mem=100gb', logCommands)
     log(". /usr/modules/init/bash", logCommands)
     log("module load python/2.7.10", logCommands)
     log("module load bwa", logCommands)
