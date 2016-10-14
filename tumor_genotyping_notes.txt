@@ -1,0 +1,99 @@
+Notes on GATK T/N (tumor/normal) variant calling
+1. PRE-PROCESSING per-sample
+Map to reference with BWA mem - Mark duplicates with Picard - Base quality score recalibration
+
+2. PRE-PROCESSING per-T/N pair
+Estimate cross-sample contamination
+
+3. VARIANT DISCOVERY per T/N pair
+Call SNVs and Indels with MuTect 2 - Filter variants
+
+
+##################
+1. Base quality score recalibration
+
+../devil_wgs/BQSR_perInd_Devils.py -s test_samples.txt -b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa -k /mnt/lfs2/hend6746/taz/filtered_plink_files/export_data_150907/seventy.1-2.nodoubletons.noparalogs.noX.plink.oneperlocus.vcf
+
+#On fortythree
+qsub -l nodes=1:ppn=6:rack11 -d ./ test_165495_BQSR_commands.sh
+   
+   
+##################
+2. ContEst:	(cross-sample)	Contamination	Estimation
+java	–jar	ContEst.jar	\	
+	 	-T	Contamination	\	
+	 	-R	reference.fasta	\	
+	 	-I	sample.bam	\	
+	 	-B:pop,vcf population stratified_af_hapmap.vcf	\	
+	 	-B:genotypes,vcf normal_sample.vcf	\	
+	 	-BTI	genotypes	\	
+	 	-o	contamination_results.txt
+	 	
+	 	
+	 	java -jar GenomeAnalysisTK.jar \
+-T ContaminationWalker \
+-R reference.fasta \
+-I tumor.bam \
+--genotypes normalGenotypes.vcf \
+--popFile populationAlleleFrequencies.vcf \
+-L populationSites.interval_list
+[-L targets.interval_list] \
+-isr INTERSECTION \
+-o output.txt
+ 	
+Contamination	estimation	for	the	sample	overall	(used	by	MuTect	in	next	step)	
+• Contamination	for	each	lane	in	the	sample	(by	read	group	–	can	blacklist	RGs) add -llc LANE	to	your	commandline	 	
+
+ContEst	is	not	intended	to	determine	stromal	contamination (the	number	of	normal	cells	in	your	tumor	sequence); use 	ABSOLUTE	by	Carter	et	al. 	
+	 	
+Interpreting results:
+0-2%	-	Fine,	everything	is	good!	
+2-5%	-	Slightly	contaminated,	might	be	worth	looking		into	if	your	sample	produces	weird	downstream	results
+Between	and	5	and	15%,	heavily	contaminated	but	salvageable,	watch	these	samples,	and	expect	much	manual	review	
+Between	15	and	50%,	heavy	contaminated,	most	likely	worth	removing	samples	and	follow	up	with	project	management	
+>50%	unusable	contamina#on,	as	you	approach	100%	contamination	there’s	a	chance	it’s	a	sample	swap
+
+
+Tumor/Normal variant calling
+   java
+     -jar GenomeAnalysisTK.jar \
+     -T MuTect2 \
+     -R reference.fasta \
+     -I:tumor tumor.bam \
+     -I:normal normal.bam \
+     [--dbsnp dbSNP.vcf] \
+     [--cosmic COSMIC.vcf] \
+     [-L targets.interval_list] \
+     -o output.vcf
+     [-contamination 0.0]	Fraction of contamination in sequencing data (for all samples) to aggressively remove
+     
+     or --contamination_fraction_per_sample_file
+    -contaminationFile	NA	Tab-separated File containing fraction of contamination in sequencing data (per sample) to aggressively remove. Format should be "" (Contamination is double) per line; No header.
+
+Normal-only calling for panel of normals creation
+   java
+     -jar GenomeAnalysisTK.jar
+     -T MuTect2
+     -R reference.fasta
+     -I:tumor normal1.bam \
+     [--dbsnp dbSNP.vcf] \
+     [--cosmic COSMIC.vcf] \
+     --artifact_detection_mode \
+     [-L targets.interval_list] \
+     -o output.normal1.vcf
+ 
+
+For full PON creation, call each of your normals separately in artifact detection mode. Then use CombineVariants to output only sites where a variant was seen in at least two samples:
+ java -jar GenomeAnalysisTK.jar
+     -T CombineVariants
+     -R reference.fasta
+     -V output.normal1.vcf -V output.normal2.vcf [-V output.normal2.vcf ...] \
+     -minN 2 \
+     --setKey "null" \
+     --filteredAreUncalled \
+     --filteredrecordsmergetype KEEP_IF_ANY_UNFILTERED \
+     [-L targets.interval_list] \
+     -o MuTect2_PON.vcf
+ 
+Caveats
+MuTect2 currently only supports the calling of a single tumor-normal pair at a time
