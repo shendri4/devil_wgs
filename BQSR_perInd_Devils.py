@@ -97,7 +97,6 @@ for sample in samples:
     cmd = ' '.join([gatkCall, ' -nct 24 ',
     ' -T PrintReads ',
     ' -I ' + jp(bamFolder, sample) + '.bam',
-    ' -knownSites ' + knownSites,
     ' -BQSR ' + jp(bamFolder, sample) + '_BQSR_FIXED.table'
     ' -o ' + jp(bamFolder, sample) + '_BQSR_FIXED.bam', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
