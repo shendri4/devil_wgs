@@ -62,7 +62,7 @@ for sample in samples:
     log('#PBS -m abe', logCommands)
     log('#PBS -M shendri4@gmail.com', logCommands)
     log('#PBS -q short', logCommands)
-    log('#PBS -l mem=100000', logCommands)
+    log('#PBS -l mem=100gb', logCommands)
     log(". /usr/modules/init/bash", logCommands)
     log("module load python/2.7.10", logCommands)
     log("module load grc", logCommands)
@@ -80,13 +80,13 @@ for sample in samples:
 #	Step 2: BaseRecalibrator on recalibrated files
 ####################
 # 
-#     cmd = ' '.join([gatkCall, ' -nct 24 ',
-#     ' -T BaseRecalibrator ',
-#     ' -I ' + jp(bamFolder, sample) + '.bam',
-#     ' -knownSites ' + knownSites,
-#     ' -BQSR ' + jp(bamFolder, sample) + '_BQSR.table'
-#     ' -o ' + jp(bamFolder, sample) + '_BQSR_FIXED.table', '>>', logFile, '2>&1'])
-#     log(cmd, logCommands)
+    cmd = ' '.join([gatkCall, ' -nct 24 ',
+    ' -T BaseRecalibrator ',
+    ' -I ' + jp(bamFolder, sample) + '.bam',
+    ' -knownSites ' + knownSites,
+    ' -BQSR ' + jp(bamFolder, sample) + '_BQSR.table'
+    ' -o ' + jp(bamFolder, sample) + '_BQSR_FIXED.table', '>>', logFile, '2>&1'])
+    log(cmd, logCommands)
 # 
 # ####################
 # #	BaseQualityRecalibration
