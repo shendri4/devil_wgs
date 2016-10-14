@@ -13,9 +13,10 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-s', "--samples", help="Samples.txt file with sample ID.", required=True)
+parser.add_argument('-s', "--normalsamples", help="Normal samples.txt file with sample ID.", required=True)
+parser.add_argument('-s', "--tumorsamples", help="Tumor samples.txt file with sample ID.", required=True)
 parser.add_argument('-b', "--bwaindex", help="Path to bwa index file.", required=True)
-parser.add_argument('-k', "--knownsites", help="Path and fileName of filteredSNP.vcf.", required=True)
+#parser.add_argument('-k', "--knownsites", help="Path and fileName of filteredSNP.vcf.", required=True)
 args = parser.parse_args()
 #args = parser.parse_args('-s samples.txt -r /mnt/lfs2/hend6746/fox_cancer/0rawdata_test -b /mnt/lfs2/hend6746/wolves/reference/canfam31/canfam31.fa'.split())
 
@@ -29,18 +30,25 @@ def log(txt, out):
     out.flush()
 
 ## Read in samples and put them in a list:
-samples = []
-for l in open(args.samples):
+normalsamples = []
+for l in open(args.normalsamples):
     if len(l) > 1:
-        samples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
+        normalsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
+print normalsamples
+## Read in samples and put them in a list:
+tumorsamples = []
+for l in open(args.tumorsamples):
+    if len(l) > 1:
+        tumorsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
+print tumorsamples
 
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
 variantFolder = abspath('03-Calls')
-PBS_scripts = abspath('BQSR_PBS_scripts')
+PBS_scripts = abspath('MuTect_PBS_scripts')
 #rawdataDir = abspath(args.rawdata)
 bwaIndex = abspath(args.bwaindex)
-knownSites = abspath(args.knownsites)
+#knownSites = abspath(args.knownsites)
 gatkCall = 'java -jar /opt/modules/biology/gatk/3.5/bin/GenomeAnalysisTK.jar -R %s' % bwaIndex
 
 os.system('mkdir -p %s' % bamFolder)
@@ -48,11 +56,11 @@ os.system('mkdir -p %s' % variantFolder)
 os.system('mkdir -p %s' % PBS_scripts)
 
 ##### Run pipeline ###
-for sample in samples:
-    print "Processing", sample, "....."
+for normalsample in normalsamples:
+    print "Processing", normalsample, "....."
     # Set up files:
-    logFile = jp(bamFolder, sample + '_BQSR.log')
-    logCommands = open(jp(PBS_scripts, sample + '_BQSR_commands.sh'), 'w')
+    logFile = jp(variantFolder, normalsample + '_mutect.log')
+    logCommands = open(jp(PBS_scripts, normalsample + '_mutect_commands.sh'), 'w')
 
     #Setup for qsub
     log('#!/bin/bash', logCommands)
@@ -70,8 +78,8 @@ for sample in samples:
 
 ####################
 #Normal-only calling for panel of normals (PON) creation
-    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:normal ' + jp(bamFolder, sample) + '.bam',
-    ' --dbsnp ' + knownSites, '  --artifact_detection_mode ', ' -o ' + jp(variantFolder, sample) +  '.vcf', '>>', logFile, '2>&1'])
+    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:normal ' + jp(bamFolder, normalsample) + '.bam',
+    ' --dbsnp ' + knownSites, '  --artifact_detection_mode ', ' -o ' + jp(variantFolder, normalsample) +  '.vcf', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     
     #-I:tumor normal1.bam
@@ -79,22 +87,21 @@ for sample in samples:
 
 ####################
 #Create list of all normal samples
-variants = []
-for sample in samples:
-    sample = ' '.join(['-V ' + jp(variantFolder, sample) + '.vcf'])
-    variants.append(sample)
-        #variants.append(l.join(['--variant ' + jp(variantFolder, sample) + '.raw.snps.indels.g.vcf'].strip('/n').split('\t'))
-#print variants
-variantList = ' '.join(str(x) for x in variants)
-print variantList
+# variants = []
+# for sample in samples:
+#     sample = ' '.join(['-V ' + jp(variantFolder, sample) + '.vcf'])
+#     variants.append(sample)
+#         #variants.append(l.join(['--variant ' + jp(variantFolder, sample) + '.raw.snps.indels.g.vcf'].strip('/n').split('\t'))
+# #print variants
+# variantList = ' '.join(str(x) for x in variants)
+# print variantList
 
 ####################
 #For full PON creation, call each of your normals separately in artifact detection mode. Then use CombineVariants to output only sites where a variant was seen in at least two samples:
-    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T CombineVariants ', variantList, ' -minN 2 ',
-    ' --setKey "null" ', ' --filteredAreUncalled ', ' --filteredrecordsmergetype KEEP_IF_ANY_UNFILTERED ', 
-    ' -o ' + jp(variantFolder) +  'MuTect2_PON.vcf', '>>', logFile, '2>&1'])
-    log(cmd, logCommands)
-
+# cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T CombineVariants ', variantList, ' -minN 2 ',
+# ' --setKey "null" ', ' --filteredAreUncalled ', ' --filteredrecordsmergetype KEEP_IF_ANY_UNFILTERED ', 
+# ' -o ' + jp(variantFolder) +  'MuTect2_PON.vcf', '>>', logFile, '2>&1'])
+# log(cmd, logCommands)
 
 #      -V output.normal1.vcf -V output.normal2.vcf [-V output.normal2.vcf ...] \
 #      -minN 2 \
