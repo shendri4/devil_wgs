@@ -59,9 +59,9 @@ for normalsample in normalsamples:
 
     #Setup for qsub
     log('#!/bin/bash', logCommands)
-    log('#PBS -N %s' % tumorsamples, logCommands)
+    log('#PBS -N %s' % normalsamples, logCommands)
     log('#PBS -j oe', logCommands)
-    log('#PBS -o %s_job.log' % tumorsamples, logCommands)
+    log('#PBS -o %s_job.log' % normalsamples, logCommands)
     log('#PBS -m abe', logCommands)
     log('#PBS -M shendri4@gmail.com', logCommands)
     log('#PBS -q short', logCommands)
