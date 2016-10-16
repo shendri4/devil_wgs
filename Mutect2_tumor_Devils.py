@@ -59,7 +59,7 @@ os.system('mkdir -p %s' % normal_PBS_scripts)
 os.system('mkdir -p %s' % tumor_PBS_scripts)
 
 ##### Run pipeline ###
-for tumorsample in tumorsamples:
+#for tumorsample in tumorsamples:
 
 for index in xrange(0,len(tumorsamples)):    
 # for normalsample in normalsamples:
