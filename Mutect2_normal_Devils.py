@@ -54,8 +54,8 @@ os.system('mkdir -p %s' % normal_PBS_scripts)
 for normalsample in normalsamples:
     print "Processing", normalsample, "....."
     # Set up files:
-    logFile = jp(variantFolder, normalsample + '_mutect.log')
-    logCommands = open(jp(normal_PBS_scripts, normalsample + '_mutect_commands.sh'), 'w')
+    logFile = jp(variantFolder, normalsample + '_normal_mutect.log')
+    logCommands = open(jp(normal_PBS_scripts, normalsample + '_normal_mutect_commands.sh'), 'w')
 
     #Setup for qsub
     log('#!/bin/bash', logCommands)
