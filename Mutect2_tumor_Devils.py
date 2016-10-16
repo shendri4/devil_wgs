@@ -65,7 +65,7 @@ for tumorsample in tumorsamples:
     logFile = jp(variantFolder, tumorsample + '_mutect.log')
     logCommands = open(jp(tumor_PBS_scripts, tumorsample + '_mutect_commands.sh'), 'w')
 
-for index in xrange(0,len(tumorsamples):
+for index in xrange(0,len(tumorsamples)):
     
 # for normalsample in normalsamples:
 #     print "Processing", normalsample, "....."
