@@ -76,9 +76,9 @@ for index in xrange(0,len(tumorsamples)):
 
     #Setup for qsub
     log('#!/bin/bash', logCommands)
-    log('#PBS -N %s' % tumorsamples, logCommands)
+    log('#PBS -N %s' % tumorsample, logCommands)
     log('#PBS -j oe', logCommands)
-    log('#PBS -o %s_job.log' % tumorsamples, logCommands)
+    log('#PBS -o %s_job.log' % tumorsample, logCommands)
     log('#PBS -m abe', logCommands)
     log('#PBS -M shendri4@gmail.com', logCommands)
     log('#PBS -q short', logCommands)
