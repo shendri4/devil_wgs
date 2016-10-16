@@ -62,8 +62,8 @@ os.system('mkdir -p %s' % tumor_PBS_scripts)
 for tumorsample in tumorsamples:
     print "Processing", tumorsample, "....."
     # Set up files:
-    logFile = jp(variantFolder, tumorsample + '_mutect.log')
-    logCommands = open(jp(tumor_PBS_scripts, tumorsample + '_mutect_commands.sh'), 'w')
+    logFile = jp(variantFolder, tumorsample + '_tumor_mutect.log')
+    logCommands = open(jp(tumor_PBS_scripts, tumorsample + '_tumor_mutect_commands.sh'), 'w')
 
 for index in xrange(0,len(tumorsamples)):
     
@@ -92,7 +92,7 @@ for index in xrange(0,len(tumorsamples)):
     #Tumor/Normal variant calling
     #NEED TO FIGURE OUT HOW TO CREATE LIST OF TUMOR/NORMAL SAMPLES
     cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:tumor ' + jp(bamFolder, tumorsample) + '_BQSR_FIXED.bam', ' -I:normal ' + jp(bamFolder, normalsample) + '_BQSR_FIXED.bam',
-    ' --normal_panel ' + jp(variantFolder, 'MuTect2_PON.vcf'),' -o ' + jp(variantFolder, 'output.vcf'), '>>', logFile, '2>&1'])
+    ' --normal_panel ' + jp(variantFolder, 'MuTect2_PON.vcf'),' -o ' + jp(variantFolder, 'tumorsample.vcf'), '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     # can  add --annotation 
     # can add --contamination_fraction_to_filter 
