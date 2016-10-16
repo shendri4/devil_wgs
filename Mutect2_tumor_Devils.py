@@ -65,6 +65,16 @@ for tumorsample in tumorsamples:
     logFile = jp(variantFolder, tumorsample + '_mutect.log')
     logCommands = open(jp(tumor_PBS_scripts, tumorsample + '_mutect_commands.sh'), 'w')
 
+for index in xrange(0,len(tumorsamples):
+    
+# for normalsample in normalsamples:
+#     print "Processing", normalsample, "....."
+#     # Set up files:
+#     logFile = jp(variantFolder, normalsample + '_mutect.log')
+#     logCommands = open(jp(normal_PBS_scripts, normalsample + '_mutect_commands.sh'), 'w')
+    tumorsample=tumorsamples[index]
+    normalsample=normalsamples[index]
+        
     #Setup for qsub
     log('#!/bin/bash', logCommands)
     log('#PBS -N %s' % tumorsamples, logCommands)
@@ -81,7 +91,7 @@ for tumorsample in tumorsamples:
     ####################
     #Tumor/Normal variant calling
     #NEED TO FIGURE OUT HOW TO CREATE LIST OF TUMOR/NORMAL SAMPLES
-    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:tumor ' + jp(bamFolder, sample) + '.bam', ' -I:normal ' + jp(bamFolder, sample) + '.bam',
+    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:tumor ' + jp(bamFolder, tumorsample) + '.bam', ' -I:normal ' + jp(bamFolder, normalsample) + '.bam',
     ' --normal_panel ' + variantFolder + ' MuTect2_PON.vcf',' -o ' + variantFolder + 'output.vcf', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     # can  add --annotation 
