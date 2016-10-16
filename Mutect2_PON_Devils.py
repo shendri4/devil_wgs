@@ -87,10 +87,10 @@ print variantList
 
 ####################
 #For full PON creation, call each of your normals separately in artifact detection mode. Then use CombineVariants to output only sites where a variant was seen in at least two samples:
-# cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T CombineVariants ', variantList, ' -minN 2 ',
-# ' --setKey "null" ', ' --filteredAreUncalled ', ' --filteredrecordsmergetype KEEP_IF_ANY_UNFILTERED ', 
-# ' -o ' + jp(variantFolder) +  'MuTect2_PON.vcf', '>>', logFile, '2>&1'])
-# log(cmd, logCommands)
+cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T CombineVariants ', variantList, ' -minN 2 ',
+' --setKey "null" ', ' --filteredAreUncalled ', ' --filteredrecordsmergetype KEEP_IF_ANY_UNFILTERED ', 
+' -o ' + jp(variantFolder) +  'MuTect2_PON.vcf', '>>', logFile, '2>&1'])
+log(cmd, logCommands)
 
 #      -V output.normal1.vcf -V output.normal2.vcf [-V output.normal2.vcf ...] \
 #      -minN 2 \
