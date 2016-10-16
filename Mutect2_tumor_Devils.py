@@ -97,4 +97,5 @@ for index in xrange(0,len(tumorsamples)):
     # can add --contamination_fraction_to_filter 
     # can add --standard_min_confidence_threshold_for_calling 30 (default)
     # --output_mode EMIT_VARIANTS_ONLY
+
     logCommands.close()
