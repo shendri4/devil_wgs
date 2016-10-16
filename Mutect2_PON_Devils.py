@@ -98,15 +98,4 @@ log(cmd, logCommands)
 #      --filteredAreUncalled \
 #      --filteredrecordsmergetype KEEP_IF_ANY_UNFILTERED \
 
-####################
-#Tumor/Normal variant calling
-#NEED TO FIGURE OUT HOW TO CREATE LIST OF TUMOR/NORMAL SAMPLES
-#     cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:tumor ' + jp(bamFolder, sample) + '.bam', ' -I:normal ' + jp(bamFolder, sample) + '.bam',
-#     ' --normal_panel ' + variantFolder + ' MuTect2_PON.vcf',' -o ' + variantFolder + 'output.vcf', '>>', logFile, '2>&1'])
-#     log(cmd, logCommands)
-# can  add --annotation 
-# can add --contamination_fraction_to_filter 
-# can add --standard_min_confidence_threshold_for_calling 30 (default)
-# --output_mode EMIT_VARIANTS_ONLY
-
 logCommands.close()
