@@ -34,12 +34,12 @@ normalsamples = []
 for l in open(args.normalsamples):
     if len(l) > 1:
         normalsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
-print normalsamples
+#print normalsamples
 tumorsamples = []
 for l in open(args.tumorsamples):
     if len(l) > 1:
         tumorsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
-print tumorsamples
+#print tumorsamples
 
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
@@ -65,8 +65,7 @@ for tumorsample in tumorsamples:
     logFile = jp(variantFolder, tumorsample + '_tumor_mutect.log')
     logCommands = open(jp(tumor_PBS_scripts, tumorsample + '_tumor_mutect_commands.sh'), 'w')
 
-for index in xrange(0,len(tumorsamples)):
-    
+for index in xrange(0,len(tumorsamples)):    
 # for normalsample in normalsamples:
 #     print "Processing", normalsample, "....."
 #     # Set up files:
@@ -74,7 +73,7 @@ for index in xrange(0,len(tumorsamples)):
 #     logCommands = open(jp(normal_PBS_scripts, normalsample + '_mutect_commands.sh'), 'w')
     tumorsample=tumorsamples[index]
     normalsample=normalsamples[index]
-        
+
     #Setup for qsub
     log('#!/bin/bash', logCommands)
     log('#PBS -N %s' % tumorsamples, logCommands)
@@ -98,5 +97,4 @@ for index in xrange(0,len(tumorsamples)):
     # can add --contamination_fraction_to_filter 
     # can add --standard_min_confidence_threshold_for_calling 30 (default)
     # --output_mode EMIT_VARIANTS_ONLY
-
     logCommands.close()
