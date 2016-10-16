@@ -36,13 +36,6 @@ for l in open(args.normalsamples):
         normalsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
 #print normalsamples
 
-## Read in samples and put them in a list:
-tumorsamples = []
-for l in open(args.tumorsamples):
-    if len(l) > 1:
-        tumorsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
-#print tumorsamples
-
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
 variantFolder = abspath('03-Calls')
@@ -69,9 +62,9 @@ os.system('mkdir -p %s' % tumor_PBS_scripts)
 
 #Setup for qsub
 log('#!/bin/bash', logCommands)
-log('#PBS -N %s' % tumorsamples, logCommands)
+log('#PBS -N %s' % normalsamples, logCommands)
 log('#PBS -j oe', logCommands)
-log('#PBS -o %s_job.log' % tumorsamples, logCommands)
+log('#PBS -o %s_job.log' % normalsamples, logCommands)
 log('#PBS -m abe', logCommands)
 log('#PBS -M shendri4@gmail.com', logCommands)
 log('#PBS -q short', logCommands)
