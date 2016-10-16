@@ -56,9 +56,10 @@ os.system('mkdir -p %s' % tumor_PBS_scripts)
 ##### Run pipeline ###
 # for normalsample in normalsamples:
 #     print "Processing", normalsample, "....."
-#     # Set up files:
-#     logFile = jp(variantFolder, normalsample + '_mutect.log')
-#     logCommands = open(jp(PBS_scripts, normalsample + '_mutect_commands.sh'), 'w')
+
+# Set up files:
+logFile = jp(variantFolder, normalsample + 'PON.log')
+logCommands = open(jp(PBS_scripts, normalsample + '_mutect_PON_commands.sh'), 'w')
 
 #Setup for qsub
 log('#!/bin/bash', logCommands)
