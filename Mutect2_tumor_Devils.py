@@ -60,10 +60,6 @@ os.system('mkdir -p %s' % tumor_PBS_scripts)
 
 ##### Run pipeline ###
 for tumorsample in tumorsamples:
-    print "Processing", tumorsample, "....."
-    # Set up files:
-    logFile = jp(variantFolder, tumorsample + '_tumor_mutect.log')
-    logCommands = open(jp(tumor_PBS_scripts, tumorsample + '_tumor_mutect_commands.sh'), 'w')
 
 for index in xrange(0,len(tumorsamples)):    
 # for normalsample in normalsamples:
@@ -73,6 +69,10 @@ for index in xrange(0,len(tumorsamples)):
 #     logCommands = open(jp(normal_PBS_scripts, normalsample + '_mutect_commands.sh'), 'w')
     tumorsample=tumorsamples[index]
     normalsample=normalsamples[index]
+    print "Processing", tumorsample, "....."
+    # Set up files:
+    logFile = jp(variantFolder, tumorsample + '_tumor_mutect.log')
+    logCommands = open(jp(tumor_PBS_scripts, tumorsample + '_tumor_mutect_commands.sh'), 'w')
 
     #Setup for qsub
     log('#!/bin/bash', logCommands)
