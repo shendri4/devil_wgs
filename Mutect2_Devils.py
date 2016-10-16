@@ -78,9 +78,9 @@ for normalsample in normalsamples:
 ####################
 #Normal-only calling for panel of normals (PON) creation
     cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:normal ' + jp(bamFolder, normalsample) + '.bam',
-    ' --dbsnp ' + knownSites, '  --artifact_detection_mode ', ' -o ' + jp(variantFolder, normalsample) +  '.vcf', '>>', logFile, '2>&1'])
+    '  --artifact_detection_mode ', ' -o ' + jp(variantFolder, normalsample) +  '.vcf', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
-    
+    #' --dbsnp ' + knownSites, 
     #-I:tumor normal1.bam
     #-o output.normal1.vcf
 
