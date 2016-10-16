@@ -74,7 +74,6 @@ for normalsample in normalsamples:
     log(". /usr/modules/init/bash", logCommands)
     log("module load python/2.7.10", logCommands)
     log("module load grc", logCommands)
-  
 
 ####################
 #Normal-only calling for panel of normals (PON) creation
