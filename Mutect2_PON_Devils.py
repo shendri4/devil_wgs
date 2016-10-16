@@ -58,14 +58,14 @@ os.system('mkdir -p %s' % tumor_PBS_scripts)
 #     print "Processing", normalsample, "....."
 
 # Set up files:
-logFile = jp(variantFolder, normalsample + 'PON.log')
-logCommands = open(jp(PBS_scripts, normalsample + '_mutect_PON_commands.sh'), 'w')
+logFile = jp(variantFolder, 'PON.log')
+logCommands = open(jp(normal_PBS_scripts,'PON_commands.sh'), 'w')
 
 #Setup for qsub
 log('#!/bin/bash', logCommands)
-log('#PBS -N %s' % normalsamples, logCommands)
+log('#PBS -N joint', logCommands)
 log('#PBS -j oe', logCommands)
-log('#PBS -o %s_job.log' % normalsamples, logCommands)
+log('#PBS -o joint_job.log', logCommands)
 log('#PBS -m abe', logCommands)
 log('#PBS -M shendri4@gmail.com', logCommands)
 log('#PBS -q short', logCommands)
