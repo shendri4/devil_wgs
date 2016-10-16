@@ -4,7 +4,6 @@
 
 #-s test_normalsamples.txt
 #-b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa
-#-k /mnt/lfs2/hend6746/taz/filtered_plink_files/export_data_150907/seventy.1-2.nodoubletons.noparalogs.noX.plink.oneperlocus.vcf
 
 from os.path import join as jp
 from os.path import abspath
