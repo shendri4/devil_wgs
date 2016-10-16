@@ -14,7 +14,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', "--normalsamples", help="Normal samples.txt file with sample ID.", required=True)
-parser.add_argument('-t', "--tumorsamples", help="Tumor samples.txt file with sample ID.", required=True)
+#parser.add_argument('-t', "--tumorsamples", help="Tumor samples.txt file with sample ID.", required=True)
 parser.add_argument('-b', "--bwaindex", help="Path to bwa index file.", required=True)
 #parser.add_argument('-k', "--knownsites", help="Path and fileName of filteredSNP.vcf.", required=True)
 args = parser.parse_args()
