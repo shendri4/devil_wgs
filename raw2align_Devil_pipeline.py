@@ -105,75 +105,75 @@ for sample in samples:
                     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
-    # Third run sickle
-    #The --length-threshold was set to 200, but that seems really long; default is 20
-    cmd = ' '.join(['sickle pe --length-threshold 20 --qual-threshold 25 --qual-type sanger -f', jp(resultsDir, sample + '_flash.notCombined_1.fastq'),
-                    '-r', jp(resultsDir, sample + '_flash.notCombined_2.fastq'),
-                    '--output-pe1', jp(resultsDir, sample + '_sickle_PE1.fastq'),
-                    '--output-pe2', jp(resultsDir, sample + '_sickle_PE2.fastq'),
-                    '--output-single', jp(resultsDir, sample + '_sickle_SE.fastq'), '>>', logFile, '2>&1'])
-    log(cmd, logCommands)
-    #os.system(cmd)
-
-
-    # Combine SE files:
-    cmd = ' '.join(['cat', jp(resultsDir, sample + '_sickle_SE.fastq'), jp(resultsDir, sample + '_flash.extendedFrags.fastq'),
-                    '>', jp(resultsDir, sample + "_cleaned_SE.fastq")])
-    log(cmd, logCommands)
-    #os.system(cmd)
-
-    # Rename PE and SE files to something nicer:
-    cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE1.fastq"), jp(resultsDir, sample + "_cleaned_PE1.fastq")])
-    log(cmd, logCommands)
-    #os.system(cmd)
-    cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE2.fastq"), jp(resultsDir, sample + "_cleaned_PE2.fastq")])
-    log(cmd, logCommands)
-    #os.system(cmd)
-
-    # Clean up intermediary files:
-    #cmd = ' '.join(['rm', jp(resultsDir, sample + "_sd*"), jp(resultsDir, sample + "_sickle*"), jp(resultsDir, sample + "_flash.extendedFrags.fastq")])
-    #log(cmd, logCommands)
-    #os.system(cmd)
-
-    # Compress cleaned files:
-    cmd = ' '.join(['gzip', jp(resultsDir, '*.fastq')])
-    log(cmd, logCommands)
-    #os.system(cmd)
-
-    # Run BWA to map samples, combine sam files, sort
-    # -t number of threads -R read group header
-    logFile = jp(bamFolder, sample + '_mapping.log')
-    cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
-                    bwaIndex, jp(resultsDir, sample + "_cleaned_PE1.fastq.gz"),
-                    jp(resultsDir, sample + "_cleaned_PE2.fastq.gz"), ">", jp(bamFolder, sample + "_PE.sam"),
-                    "2>", logFile])
-    log(cmd, logCommands)
-    #os.system(cmd)
-    cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
-                    bwaIndex, jp(resultsDir, sample + "_cleaned_SE.fastq.gz"), ">>", jp(bamFolder, sample + "_SE.sam"),
-                    "2>>", logFile])
-    log(cmd, logCommands)
-    #os.system(cmd)
-
-    #merge and sort
-    cmd = ' '.join(['cat', jp(bamFolder, sample + "_PE.sam"), '>', jp(bamFolder, sample + ".sam")])
-    log(cmd, logCommands)
-    #os.system(cmd)
-    cmd = ' '.join(['samtools view', jp(bamFolder, sample + "_SE.sam"), '>>', jp(bamFolder, sample + ".sam")])
-    log(cmd, logCommands)
-    #os.system(cmd)
-    cmd = ' '.join(['samtools view -bS', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam"])
-    log(cmd, logCommands)
-    #os.system(cmd)
-
-    #Index:
-    cmd = ' '.join(['samtools index', jp(bamFolder, sample) + ".bam"])
-    log(cmd, logCommands)
-    #os.system(cmd)
-
-    # Clean up sam files:
-    cmd = ' '.join(['rm', jp(bamFolder, "*.sam")])
-    log(cmd, logCommands)
-    #os.system(cmd)
+#     Third run sickle
+#     The --length-threshold was set to 200, but that seems really long; default is 20
+#     cmd = ' '.join(['sickle pe --length-threshold 20 --qual-threshold 25 --qual-type sanger -f', jp(resultsDir, sample + '_flash.notCombined_1.fastq'),
+#                     '-r', jp(resultsDir, sample + '_flash.notCombined_2.fastq'),
+#                     '--output-pe1', jp(resultsDir, sample + '_sickle_PE1.fastq'),
+#                     '--output-pe2', jp(resultsDir, sample + '_sickle_PE2.fastq'),
+#                     '--output-single', jp(resultsDir, sample + '_sickle_SE.fastq'), '>>', logFile, '2>&1'])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+# 
+#     Combine SE files:
+#     cmd = ' '.join(['cat', jp(resultsDir, sample + '_sickle_SE.fastq'), jp(resultsDir, sample + '_flash.extendedFrags.fastq'),
+#                     '>', jp(resultsDir, sample + "_cleaned_SE.fastq")])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+#     Rename PE and SE files to something nicer:
+#     cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE1.fastq"), jp(resultsDir, sample + "_cleaned_PE1.fastq")])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+#     cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE2.fastq"), jp(resultsDir, sample + "_cleaned_PE2.fastq")])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+#     Clean up intermediary files:
+#     cmd = ' '.join(['rm', jp(resultsDir, sample + "_sd*"), jp(resultsDir, sample + "_sickle*"), jp(resultsDir, sample + "_flash.extendedFrags.fastq")])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+#     Compress cleaned files:
+#     cmd = ' '.join(['gzip', jp(resultsDir, '*.fastq')])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+#     Run BWA to map samples, combine sam files, sort
+#     -t number of threads -R read group header
+#     logFile = jp(bamFolder, sample + '_mapping.log')
+#     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
+#                     bwaIndex, jp(resultsDir, sample + "_cleaned_PE1.fastq.gz"),
+#                     jp(resultsDir, sample + "_cleaned_PE2.fastq.gz"), ">", jp(bamFolder, sample + "_PE.sam"),
+#                     "2>", logFile])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+#     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
+#                     bwaIndex, jp(resultsDir, sample + "_cleaned_SE.fastq.gz"), ">>", jp(bamFolder, sample + "_SE.sam"),
+#                     "2>>", logFile])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+#     merge and sort
+#     cmd = ' '.join(['cat', jp(bamFolder, sample + "_PE.sam"), '>', jp(bamFolder, sample + ".sam")])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+#     cmd = ' '.join(['samtools view', jp(bamFolder, sample + "_SE.sam"), '>>', jp(bamFolder, sample + ".sam")])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+#     cmd = ' '.join(['samtools view -bS', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam"])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+#     Index:
+#     cmd = ' '.join(['samtools index', jp(bamFolder, sample) + ".bam"])
+#     log(cmd, logCommands)
+#     os.system(cmd)
+# 
+#     Clean up sam files:
+#     cmd = ' '.join(['rm', jp(bamFolder, "*.sam")])
+#     log(cmd, logCommands)
+#     os.system(cmd)
     
     logCommands.close()
