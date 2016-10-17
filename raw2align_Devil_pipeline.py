@@ -48,8 +48,7 @@ variantFolder = abspath('03-Calls')
 PBS_scripts = abspath('PBS_scripts')
 rawdataDir = abspath(args.rawdata)
 bwaIndex = abspath(args.bwaindex)
-#gatkCall = 'java -jar /opt/modules/biology/gatk/3.5/bin/GenomeAnalysisTK.jar -R %s ' % bwaIndex
-
+picardCall = 'java -jar -Djava.io.tmpdir=/temp /mnt/lfs2/hend6746/modules/picard-tools/1.115/MarkDuplicates.jar '
 
 os.system('mkdir -p %s' % resultsDir)
 os.system('mkdir -p %s' % bamFolder)
@@ -117,17 +116,17 @@ for sample in samples:
 # 
 # 
 #     Combine SE files:
-#     cmd = ' '.join(['cat', jp(resultsDir, sample + '_sickle_SE.fastq'), jp(resultsDir, sample + '_flash.extendedFrags.fastq'),
-#                     '>', jp(resultsDir, sample + "_cleaned_SE.fastq")])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['cat', jp(resultsDir, sample + '_sickle_SE.fastq'), jp(resultsDir, sample + '_flash.extendedFrags.fastq'),
+                    '>', jp(resultsDir, sample + "_cleaned_SE.fastq")])
+    log(cmd, logCommands)
 #     os.system(cmd)
 # 
 #     Rename PE and SE files to something nicer:
-#     cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE1.fastq"), jp(resultsDir, sample + "_cleaned_PE1.fastq")])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE1.fastq"), jp(resultsDir, sample + "_cleaned_PE1.fastq")])
+    log(cmd, logCommands)
 #     os.system(cmd)
-#     cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE2.fastq"), jp(resultsDir, sample + "_cleaned_PE2.fastq")])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE2.fastq"), jp(resultsDir, sample + "_cleaned_PE2.fastq")])
+    log(cmd, logCommands)
 #     os.system(cmd)
 # 
 #     Clean up intermediary files:
@@ -136,36 +135,42 @@ for sample in samples:
 #     os.system(cmd)
 # 
 #     Compress cleaned files:
-#     cmd = ' '.join(['gzip', jp(resultsDir, '*.fastq')])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['gzip', jp(resultsDir, '*.fastq')])
+    log(cmd, logCommands)
 #     os.system(cmd)
 # 
 #     Run BWA to map samples, combine sam files, sort
 #     -t number of threads -R read group header
-#     logFile = jp(bamFolder, sample + '_mapping.log')
-#     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
-#                     bwaIndex, jp(resultsDir, sample + "_cleaned_PE1.fastq.gz"),
-#                     jp(resultsDir, sample + "_cleaned_PE2.fastq.gz"), ">", jp(bamFolder, sample + "_PE.sam"),
-#                     "2>", logFile])
-#     log(cmd, logCommands)
+    logFile = jp(bamFolder, sample + '_mapping.log')
+    cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
+                    bwaIndex, jp(resultsDir, sample + "_cleaned_PE1.fastq.gz"),
+                    jp(resultsDir, sample + "_cleaned_PE2.fastq.gz"), ">", jp(bamFolder, sample + "_PE.sam"),
+                    "2>", logFile])
+    log(cmd, logCommands)
 #     os.system(cmd)
-#     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
-#                     bwaIndex, jp(resultsDir, sample + "_cleaned_SE.fastq.gz"), ">>", jp(bamFolder, sample + "_SE.sam"),
-#                     "2>>", logFile])
-#     log(cmd, logCommands)
+    cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
+                    bwaIndex, jp(resultsDir, sample + "_cleaned_SE.fastq.gz"), ">>", jp(bamFolder, sample + "_SE.sam"),
+                    "2>>", logFile])
+    log(cmd, logCommands)
 #     os.system(cmd)
 # 
 #     merge and sort
-#     cmd = ' '.join(['cat', jp(bamFolder, sample + "_PE.sam"), '>', jp(bamFolder, sample + ".sam")])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['cat', jp(bamFolder, sample + "_PE.sam"), '>', jp(bamFolder, sample + ".sam")])
+    log(cmd, logCommands)
 #     os.system(cmd)
-#     cmd = ' '.join(['samtools view', jp(bamFolder, sample + "_SE.sam"), '>>', jp(bamFolder, sample + ".sam")])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['samtools view', jp(bamFolder, sample + "_SE.sam"), '>>', jp(bamFolder, sample + ".sam")])
+    log(cmd, logCommands)
 #     os.system(cmd)
-#     cmd = ' '.join(['samtools view -bS', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam"])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['samtools view -bS', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam"])
+    log(cmd, logCommands)
 #     os.system(cmd)
 # 
+# Mark PCR duplicates (remove duplicates, if desired)
+    cmd = ' '.jp([picardCall, ' INPUT=' + jp(bamFolder, sample + ".bam"), ' OUTPUT=' + jp(bamFolder, sample + "markdup.bam"),
+    ' METRICS_FILE=' + jp(bamFolder, sample + ".metrics"), ' REMOVE_DUPLICATES=false ',
+    ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT TMP_DIR=/temp'])
+    log(cmd, logCommands)
+
 #     Index:
 #     cmd = ' '.join(['samtools index', jp(bamFolder, sample) + ".bam"])
 #     log(cmd, logCommands)
