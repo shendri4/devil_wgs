@@ -85,24 +85,25 @@ for sample in samples:
 #                     '-2', jp(rawdataDir, sample + '.fastq.2.gz'), '-p', jp(resultsDir, sample + '_sd'),
 #                     '>>', logFile, '2>&1'])
 #     log(cmd, logCommands)
-    cmd = ' '.join(['super_deduper -1', jp(rawdataDir, sample + '.fastq.1.gz'),
-                    '-2', jp(rawdataDir, sample + '.fastq.2.gz'), '-p', jp(resultsDir, sample + '_sd'),
-                    '>>', logFile, '2>&1'])
-    log(cmd, logCommands)
-    
-    cmd = ' '.join(['flash2 --max-overlap 150 --allow-outies --threads 7 -o', sample + '_flash',
-                    '-d', resultsDir, jp(resultsDir, sample + '_sd_nodup_PE1.fastq'), jp(resultsDir, sample + '_sd_nodup_PE2.fastq.gz'),
-                    '>>', logFile, '2>&1'])
-    log(cmd, logCommands)
-
+#     cmd = ' '.join(['super_deduper -1', jp(rawdataDir, sample + '.fastq.1.gz'),
+#                     '-2', jp(rawdataDir, sample + '.fastq.2.gz'), '-p', jp(resultsDir, sample + '_sd'),
+#                     '>>', logFile, '2>&1'])
+#     log(cmd, logCommands)
+#     
+#     cmd = ' '.join(['flash2 --max-overlap 150 --allow-outies --threads 7 -o', sample + '_flash',
+#                     '-d', resultsDir, jp(resultsDir, sample + '_sd_nodup_PE1.fastq'), jp(resultsDir, sample + '_sd_nodup_PE2.fastq.gz'),
+#                     '>>', logFile, '2>&1'])
+#     log(cmd, logCommands)
 #ln -s file /mnt/lfs2/stre3949/Sarah/filename .
+
+
     # Second run flash2
     # the --max-overlap was set to 600, but that seems really long; default is 65, try 400
     # --max-overlap 400 --min-overlap 15 --max-mismatch-density .10 --min-overlap-outie 35 --percent-cutoff 25
-#     cmd = ' '.join(['flash2 --max-overlap 150 --allow-outies --threads 7 -o', sample + '_flash',
-#                     '-d', resultsDir, jp(resultsDir, sample + '_PE1.fastq'), jp(resultsDir, sample + '_PE2.fastq'),
-#                     '>>', logFile, '2>&1'])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['flash2 --max-overlap 150 --allow-outies --threads 7 -o', sample + '_flash',
+                    '-d', resultsDir, jp(resultsDir, sample + '.fastq.1.gz'), jp(resultsDir, sample + '.fastq.2.gz'),
+                    '>>', logFile, '2>&1'])
+    log(cmd, logCommands)
 
     # Third run sickle
     #The --length-threshold was set to 200, but that seems really long; default is 20
