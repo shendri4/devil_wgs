@@ -167,8 +167,8 @@ for sample in samples:
 # 
 # Mark PCR duplicates (remove duplicates, if desired)
     cmd = ' '.jp([picardCall, ' INPUT=', jp(bamFolder, sample + ".bam"), ' OUTPUT=', jp(bamFolder, sample + "markdup.bam"),
-        ' METRICS_FILE=', jp(bamFolder, sample + ".metrics"), ' REMOVE_DUPLICATES=false ',
-        ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT TMP_DIR=/temp'])
+                    ' METRICS_FILE=', jp(bamFolder, sample + ".metrics"), ' REMOVE_DUPLICATES=false ',
+                    ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT TMP_DIR=/temp'])
     log(cmd, logCommands)
 
 #     Index:
