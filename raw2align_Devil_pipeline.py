@@ -166,9 +166,9 @@ for sample in samples:
 #     os.system(cmd)
 # 
 # Mark PCR duplicates (remove duplicates, if desired)
-    cmd = ' '.jp([picardCall, ' INPUT=', jp(bamFolder, sample + ".bam"), ' OUTPUT=', jp(bamFolder, sample + "markdup.bam"),
+    cmd = ' '.join([picardCall, ' INPUT=', jp(bamFolder, sample + ".bam"), ' OUTPUT=', jp(bamFolder, sample + "markdup.bam"),
                     ' METRICS_FILE=', jp(bamFolder, sample + ".metrics"), ' REMOVE_DUPLICATES=false ',
-                    ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT TMP_DIR=/temp'])
+                    ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT TMP_DIR=/temp', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
 #     Index:
