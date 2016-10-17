@@ -107,12 +107,12 @@ for sample in samples:
 
 #     Third run sickle
 #     The --length-threshold was set to 200, but that seems really long; default is 20
-#     cmd = ' '.join(['sickle pe --length-threshold 20 --qual-threshold 25 --qual-type sanger -f', jp(resultsDir, sample + '_flash.notCombined_1.fastq'),
-#                     '-r', jp(resultsDir, sample + '_flash.notCombined_2.fastq'),
-#                     '--output-pe1', jp(resultsDir, sample + '_sickle_PE1.fastq'),
-#                     '--output-pe2', jp(resultsDir, sample + '_sickle_PE2.fastq'),
-#                     '--output-single', jp(resultsDir, sample + '_sickle_SE.fastq'), '>>', logFile, '2>&1'])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['sickle pe --length-threshold 20 --qual-threshold 25 --qual-type sanger -f', jp(resultsDir, sample + '_flash.notCombined_1.fastq'),
+                    '-r', jp(resultsDir, sample + '_flash.notCombined_2.fastq'),
+                    '--output-pe1', jp(resultsDir, sample + '_sickle_PE1.fastq'),
+                    '--output-pe2', jp(resultsDir, sample + '_sickle_PE2.fastq'),
+                    '--output-single', jp(resultsDir, sample + '_sickle_SE.fastq'), '>>', logFile, '2>&1'])
+    log(cmd, logCommands)
 #     os.system(cmd)
 # 
 # 
