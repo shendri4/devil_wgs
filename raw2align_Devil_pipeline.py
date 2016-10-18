@@ -48,7 +48,7 @@ variantFolder = abspath('03-Calls')
 PBS_scripts = abspath('PBS_scripts')
 rawdataDir = abspath(args.rawdata)
 bwaIndex = abspath(args.bwaindex)
-picardCall = 'java -Xms4g -jar -Djava.io.tmpdir=/temp /mnt/lfs2/hend6746/modules/picard-tools/1.115/MarkDuplicates.jar '
+picardCall = 'java -Xms4g -jar /mnt/lfs2/hend6746/modules/picard-tools/1.115/MarkDuplicates.jar '
 
 os.system('mkdir -p %s' % resultsDir)
 os.system('mkdir -p %s' % bamFolder)
@@ -171,15 +171,14 @@ for sample in samples:
                     ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
-#TMP_DIR=/temp
 #     Index:
-#     cmd = ' '.join(['samtools index', jp(bamFolder, sample) + ".bam"])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['samtools index', jp(bamFolder, sample) + ".bam"])
+    log(cmd, logCommands)
 #     os.system(cmd)
 # 
 #     Clean up sam files:
-#     cmd = ' '.join(['rm', jp(bamFolder, "*.sam")])
-#     log(cmd, logCommands)
+    cmd = ' '.join(['rm', jp(bamFolder, "*.sam")])
+    log(cmd, logCommands)
 #     os.system(cmd)
     
     logCommands.close()
