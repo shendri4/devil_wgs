@@ -62,9 +62,9 @@ logCommands = open(jp(normal_PBS_scripts,'PON_commands.sh'), 'w')
 
 #Setup for qsub
 log('#!/bin/bash', logCommands)
-log('#PBS -N joint', logCommands)
+log('#PBS -N PON', logCommands)
 log('#PBS -j oe', logCommands)
-log('#PBS -o joint_job.log', logCommands)
+log('#PBS -o PON_job.log', logCommands)
 log('#PBS -m abe', logCommands)
 log('#PBS -M shendri4@gmail.com', logCommands)
 log('#PBS -q short', logCommands)
