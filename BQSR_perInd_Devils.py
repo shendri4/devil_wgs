@@ -71,7 +71,8 @@ for sample in samples:
 #	BaseQualityRecalibration
 #	Step 1: First run of BQSR: BaseRecalibrator
 ####################
-    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T BaseRecalibrator ', ' -I ' + jp(bamFolder, sample) + '.bam', ' -knownSites ' + knownSites,
+    cmd = ' '.join([gatkCall, ' -nct 24 ',
+    ' -T BaseRecalibrator ', ' -I ' + jp(bamFolder, sample) + '_markdup.bam', ' -knownSites ' + knownSites,
     ' -o ' + jp(bamFolder, sample) + '_BQSR.table', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
@@ -82,7 +83,7 @@ for sample in samples:
 
     cmd = ' '.join([gatkCall, ' -nct 24 ',
     ' -T BaseRecalibrator ',
-    ' -I ' + jp(bamFolder, sample) + '.bam',
+    ' -I ' + jp(bamFolder, sample) + '_markdup.bam',
     ' -knownSites ' + knownSites,
     ' -BQSR ' + jp(bamFolder, sample) + '_BQSR.table'
     ' -o ' + jp(bamFolder, sample) + '_BQSR_FIXED.table', '>>', logFile, '2>&1'])
@@ -96,9 +97,9 @@ for sample in samples:
 
     cmd = ' '.join([gatkCall, ' -nct 24 ',
     ' -T PrintReads ',
-    ' -I ' + jp(bamFolder, sample) + '.bam',
+    ' -I ' + jp(bamFolder, sample) + '_markdup.bam',
     ' -BQSR ' + jp(bamFolder, sample) + '_BQSR_FIXED.table'
-    ' -o ' + jp(bamFolder, sample) + '_BQSR_FIXED.bam', '>>', logFile, '2>&1'])
+    ' -o ' + jp(bamFolder, sample) + '_markdup_BQSR_FIXED.bam', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
     logCommands.close()
