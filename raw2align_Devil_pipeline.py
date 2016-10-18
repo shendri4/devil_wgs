@@ -48,7 +48,7 @@ variantFolder = abspath('03-Calls')
 PBS_scripts = abspath('PBS_scripts')
 rawdataDir = abspath(args.rawdata)
 bwaIndex = abspath(args.bwaindex)
-picardCall = 'java -jar -Djava.io.tmpdir=/temp /mnt/lfs2/hend6746/modules/picard-tools/1.115/MarkDuplicates.jar '
+picardCall = 'java -Xms4g -jar -Djava.io.tmpdir=/temp /mnt/lfs2/hend6746/modules/picard-tools/1.115/MarkDuplicates.jar '
 
 os.system('mkdir -p %s' % resultsDir)
 os.system('mkdir -p %s' % bamFolder)
@@ -166,8 +166,8 @@ for sample in samples:
 #     os.system(cmd)
 # 
 # Mark PCR duplicates (remove duplicates, if desired)
-    cmd = ' '.join([picardCall, ' INPUT=' + jp(bamFolder, sample + ".bam"), ' OUTPUT=',jp(bamFolder, sample + "_markdup.bam"),
-                    ' METRICS_FILE=', jp(bamFolder, sample + ".metrics"), ' REMOVE_DUPLICATES=false ',
+    cmd = ' '.join([picardCall, ' INPUT=' + jp(bamFolder, sample + ".bam"), ' OUTPUT=' + jp(bamFolder, sample + "_markdup.bam"),
+                    ' METRICS_FILE=' + jp(bamFolder, sample + ".metrics"), ' REMOVE_DUPLICATES=true ',
                     ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT TMP_DIR=/temp', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
