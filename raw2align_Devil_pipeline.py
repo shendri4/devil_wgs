@@ -172,7 +172,7 @@ for sample in samples:
     log(cmd, logCommands)
 
 #     Index:
-    cmd = ' '.join(['samtools index', jp(bamFolder, sample) + ".bam"])
+    cmd = ' '.join(['samtools index', jp(bamFolder, sample) + "_markdup.bam"])
     log(cmd, logCommands)
 #     os.system(cmd)
 # 
