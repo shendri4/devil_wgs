@@ -91,7 +91,7 @@ for index in xrange(0,len(tumorsamples)):
     #Tumor/Normal variant calling
     #NEED TO FIGURE OUT HOW TO CREATE LIST OF TUMOR/NORMAL SAMPLES
     cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:tumor ' + jp(bamFolder, tumorsample) + '_markdup_BQSR_FIXED.bam', ' -I:normal ' + jp(bamFolder, normalsample) + '_markdup_BQSR_FIXED.bam',
-    ' --normal_panel ' + jp(variantFolder, 'MuTect2_PON.vcf'),' -o ' + jp(variantFolder, 'tumorsample.vcf'), '>>', logFile, '2>&1'])
+    ' --normal_panel ' + jp(variantFolder, 'MuTect2_PON.vcf'),' -o ' + jp(variantFolder, tumorsample) + '.vcf'), '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     # can  add --annotation 
     # can add --contamination_fraction_to_filter 
