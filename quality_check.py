@@ -70,15 +70,13 @@ for sample in samples:
 
 ###########################################################################
 #### Number of raw reads
-    cmd = ' '.join(['result = commands.getoutput(zcat ' + jp(rawdataDir, sample + '.fastq.1.gz'), ' | ', ' wc -l )', 
-    '>>', logFile, '2>&1'])
+    cmd = ' '.join(['result = commands.getoutput(zcat ' + jp(rawdataDir, sample + '.fastq.1.gz'), ' | ', ' wc -l )']) 
     log(cmd, logCommands)
     
-    cmd = ' '.join(['numseqs = int(result) / 4.0', 
-    '>>', logFile, '2>&1'])
+    cmd = ' '.join(['numseqs = int(result) / 4.0'])
     log(cmd, logCommands)
  
-    cmd = ' '.join(['print numseqs', 
+    cmd = ' '.join(['print numseqs',
     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
         
