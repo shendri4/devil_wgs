@@ -61,7 +61,7 @@ for sample in samples:
     log('#PBS -m abe', logCommands)
     log('#PBS -M shendri4@gmail.com', logCommands)
     log('#PBS -q short', logCommands)
-    log('#PBS -l mem=100gb', logCommands)
+    #log('#PBS -l mem=100gb', logCommands)
     log(". /usr/modules/init/bash", logCommands)
     log("module load python/2.7.10", logCommands)
     log("module load bwa", logCommands)
@@ -70,7 +70,7 @@ for sample in samples:
 
 ###########################################################################
 #### Number of raw reads
-    cmd = ' '.join(['result = commands.getoutput(zcat ' + jp(rawdataDir, sample + '.fastq.1.gz'), ' | ', ' wc -l )']) 
+    cmd = ' '.join(['result = commands.getoutput(' + 'zcat ' + jp(rawdataDir, sample + '.fastq.1.gz') + ' | ' + ' wc -l )']) 
     log(cmd, logCommands)
     
     cmd = ' '.join(['numseqs = int(result) / 4.0'])
