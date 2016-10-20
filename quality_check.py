@@ -11,6 +11,7 @@ from os.path import abspath
 import os
 import sys
 import argparse
+import commands
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', "--samples", help="Samples.txt file with sample ID.", required=True)
@@ -69,10 +70,21 @@ for sample in samples:
 
 ###########################################################################
 #### Number of raw reads
-    cmd = ' '.join(['zcat ' + jp(rawdataDir, sample + '.fastq.1.gz'), ' | ',
-    ' wc -l | /4 ', 
+    cmd = ' '.join(['result = commands.getoutput(zcat ' + jp(rawdataDir, sample + '.fastq.1.gz'), ' | ', ' wc -l )', 
     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
+    
+    cmd = ' '.join(['numseqs = int(result) / 4.0', 
+    '>>', logFile, '2>&1'])
+    log(cmd, logCommands)
+ 
+    cmd = ' '.join(['print numseqs', 
+    '>>', logFile, '2>&1'])
+    log(cmd, logCommands)
+        
+#result = commands.getoutput('zcat /mnt/lfs2/hend6746/devils/fastqFiles_160916/01-Cleaned/test_165499_cleaned_SE.fastq.gz | wc -l')
+#numseqs = int(result) / 4.0
+#print numseqs
 
 # jp(rawdataDir, sample + '.fastq.2.gz'),
 #grep "Total pairs:"' + jp(rawdataDir, sample + ), '>>', jp(resultsDir, sample + 'qualityStats_output.txt'), '>>', logFile, '2>&1'])
