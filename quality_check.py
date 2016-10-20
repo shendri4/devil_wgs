@@ -46,6 +46,9 @@ os.system('mkdir -p %s' % bamFolder)
 os.system('mkdir -p %s' % variantFolder)
 os.system('mkdir -p %s' % PBS_scripts)
 
+############################################### create file#################################
+raw_fq_1=raw_fq_1.txt
+
 ##### Run pipeline ###
 for sample in samples:
     print "Processing", sample, "....."
@@ -70,13 +73,7 @@ for sample in samples:
 
 ###########################################################################
 #### Number of raw reads
-    cmd = ' '.join(['result = commands.getoutput(zcat ', jp(rawdataDir, sample + '.fastq.1.gz'), ' | wc -l)']) 
-    log(cmd, logCommands)
-    
-    cmd = ' '.join(['numseqs = int(result) / 4.0'])
-    log(cmd, logCommands)
- 
-    cmd = ' '.join(['print numseqs',
+    cmd = ' '.join(['zcat ', jp(rawdataDir, sample + '.fastq.1.gz'), ' | wc -l', '>', raw_fq_1,
     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
         
