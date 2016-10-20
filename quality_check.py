@@ -70,7 +70,7 @@ for sample in samples:
 ###########################################################################
 #### Number of raw reads
     cmd = ' '.join(['zcat ' + jp(rawdataDir, sample + '.fastq.1.gz'), ' | ',
-    ' echo $(('wc -l'/4))', 
+    ' wc -l | /4 ', 
     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
