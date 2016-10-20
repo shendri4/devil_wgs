@@ -53,11 +53,7 @@ for sample in samples:
         
     cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(rawdataDir, sample + '.fastq.2.gz'), '>>', logFile, '2>&1'])
     log(cmd, logCommands)
-    
-    #Number of raw reads
-#     cmd = ' '.join(['grep "Total pairs:"' + jp(rawdataDir, sample + ), '>>', jp(resultsDir, sample + 'qualityStats_output.txt'), '>>', logFile, '2>&1'])
-#     log(cmd, logCommands)
-    
+        
     ######cleaned
     cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(cleandataDir, sample + '_cleaned_PE1.fastq.gz'), '>>', logFile, '2>&1'])
     log(cmd, logCommands)
