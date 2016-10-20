@@ -38,16 +38,20 @@ for l in open(args.samples):
 resultsDir = abspath('01-Cleaned')
 bamFolder = abspath('02-Mapped')
 variantFolder = abspath('03-Calls')
+qcFolder = abspath('qc')
 PBS_scripts = abspath('PBS_scripts/qc_scripts')
 rawdataDir = abspath(args.rawdata)
 
 os.system('mkdir -p %s' % resultsDir)
 os.system('mkdir -p %s' % bamFolder)
 os.system('mkdir -p %s' % variantFolder)
+os.system('mkdir -p %s' % qcFolder)
 os.system('mkdir -p %s' % PBS_scripts)
 
 ############################################### create file#################################
-raw_fq_1=raw_fq_1.txt
+
+raw_fq_1 = open(jp(qcFolder, 'raw_fq_1.txt'), 'w')
+
 
 ##### Run pipeline ###
 for sample in samples:
@@ -74,7 +78,7 @@ for sample in samples:
 ###########################################################################
 #### Number of raw reads
     cmd = ' '.join(['zcat ', jp(rawdataDir, sample + '.fastq.1.gz'), ' | wc -l', '>', raw_fq_1,
-    '>>', logFile, '2>&1'])
+    '2>&1'])
     log(cmd, logCommands)
         
 #result = commands.getoutput('zcat /mnt/lfs2/hend6746/devils/fastqFiles_160916/01-Cleaned/test_165499_cleaned_SE.fastq.gz | wc -l')
