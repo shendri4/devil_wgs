@@ -77,7 +77,7 @@ for sample in samples:
 
 ###########################################################################
 #### Number of raw reads
-    cmd = ' '.join(['zcat', jp(rawdataDir, sample + '.fastq.1.gz'), ' | wc -l >', raw_fq_1])
+    cmd = ' '.join(['zcat', jp(rawdataDir, sample + '.fastq.1.gz'), ' | wc -l >', raw_fq_1, '2>&1'])
     log(cmd, logCommands)
         
 #result = commands.getoutput('zcat /mnt/lfs2/hend6746/devils/fastqFiles_160916/01-Cleaned/test_165499_cleaned_SE.fastq.gz | wc -l')
