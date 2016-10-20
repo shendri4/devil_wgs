@@ -139,65 +139,6 @@ cmd = ' '.join([gatkCall, ' -T VariantEval ',
 ' --stratificationModule FunctionalClass '
 '>>', logFile, '2>&1'])
 log(cmd, logCommands)
-	
-###########################################################################
-#### Extract the Indels from the call set
-cmd = ' '.join([gatkCall, ' -T SelectVariants ', 
-' -o ' + jp(variantFolder, variant + '_raw_indels.vcf'), 
-' -V ' + jp(variantFolder, variant + '.vcf'), 
-' -selectType INDEL ',
-'>>', logFile, '2>&1'])
-log(cmd, logCommands)
-
-###########################################################################
-#### Apply the filter to the Indel call set
-cmd = ' '.join([gatkCall, ' -T VariantFiltration ', 
-' -V ' + jp(variantFolder, variant + '_raw_indels.vcf'), 
-' -o ' + jp(variantFolder, variant + '_filtered_indels.vcf'), 
-' --filterExpression "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0" ', 
-' --filterName "Badindel" ',
-'>>', logFile, '2>&1'])
-log(cmd, logCommands)   
-    
-    --filterName "BadIndel-QD" \
-	--filterExpression "vc.getType().toString().equals('INDEL') && (QD < 2.0)" \
-	--filterName "BadIndel-ReadPosRankSum" \
-	--filterExpression "vc.getType().toString().equals('INDEL') && (ReadPosRankSum < -20.0)" \
-	--filterName "BadIndel-FS" \
-	--filterExpression "vc.getType().toString().equals('INDEL') && (FS > 200.0)" \
-	--filterName "BadIndel-SOR" \
-	--filterExpression "vc.getType().toString().equals('INDEL') && (SOR > 10.0)" \
-	#The InbreedingCoeff statistic is a population-level calculation that is only available with 10 or more samples. 
-	#If you have fewer samples you will need to omit that particular filter statement.
-	#--filterName "BadIndel-InbreedingCoeff" \
-	#--filterExpression "vc.getType().toString().equals('INDEL') && (InbreedingCoeff < -0.8)"
-
-###########################################################################
-#### Exclude non-variant loci and filtered loci (trim remaining alleles by default):
-cmd = ' '.join([gatkCall, ' -T SelectVariants ', 
-' -o ' + jp(variantFolder, variant + '_selected_filtered_indels.vcf'), 
-' -V ' + jp(variantFolder, variant + '_filtered_indels.vcf'), 
-' --excludeNonVariants ', ' --excludeFiltered ',
-'>>', logFile, '2>&1'])
-log(cmd, logCommands)
-   	
-###########################################################################
-################################## 
-## Evaluate all variants in file 
-################################## 
-cmd = ' '.join([gatkCall, ' -T VariantEval ', 
-' -o ' + jp(variantResults, variant + '_selected_filtered_indels.eval.gatkreport.grp'), 
-' --eval: ' + jp(variantFolder, variant + '_selected_filtered_indels.vcf'), 
-' --doNotUseAllStandardStratifications ', ' --doNotUseAllStandardModules ',
-' --evalModule CountVariants '
-' --evalModule TiTvVariantEvaluator '
-' --stratificationModule CompRod '
-' --stratificationModule EvalRod '
-' --stratificationModule Sample '
-' --stratificationModule Filter '
-' --stratificationModule FunctionalClass '
-'>>', logFile, '2>&1'])
-log(cmd, logCommands)
-	
+		
 logCommands.close()
 	
