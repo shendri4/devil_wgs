@@ -50,8 +50,7 @@ os.system('mkdir -p %s' % PBS_scripts)
 
 ############################################### create file#################################
 
-raw_fq_1 = open(jp(qcFolder, 'raw_fq_1.txt'), 'w')
-
+raw_fq_1 = jp(qcFolder, 'raw_fq_1.txt')
 
 ##### Run pipeline ###
 for sample in samples:
