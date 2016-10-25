@@ -55,13 +55,13 @@ for sample in samples:
     log(cmd, logCommands)
         
     ######cleaned
-    cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(cleandataDir, sample + '_cleaned_PE1.fastq.gz'), '>>', logFile, '2>&1'])
+    cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(cleanaDir, sample + '_cleaned_PE1.fastq.gz'), '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     
-    cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(cleandataDir, sample + '_cleaned_PE2.fastq.gz'), '>>', logFile, '2>&1'])
+    cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(cleanDir, sample + '_cleaned_PE2.fastq.gz'), '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     
-    cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(cleandataDir, sample + '_cleaned_SE.fastq.gz'), '>>', logFile, '2>&1']) 
+    cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(cleanDir, sample + '_cleaned_SE.fastq.gz'), '>>', logFile, '2>&1']) 
     log(cmd, logCommands)
 
 #   grep "FastQ paired records kept:" >> qualityStats_output.txt
