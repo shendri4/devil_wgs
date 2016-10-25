@@ -46,7 +46,21 @@ for sample in samples:
     # Set up files:
     logFile = jp(resultsDir, sample + '_fastqc.log')
     logCommands = open(jp(resultsDir, sample + '_fastqc_commands.sh'), 'w')
-
+    
+    #Setup for qsub
+    log('#!/bin/bash', logCommands)
+    log('#PBS -N %s' % sample, logCommands)
+    log('#PBS -j oe', logCommands)
+    log('#PBS -o %s_job.log' % sample, logCommands)
+    #log('#PBS -m abe', logCommands)
+    #log('#PBS -M shendri4@gmail.com', logCommands)
+    log('#PBS -q short', logCommands)
+    #log('#PBS -l mem=100gb', logCommands)
+    log(". /usr/modules/init/bash", logCommands)
+    log("module load python/2.7.10", logCommands)
+    log("module load grc", logCommands)
+    log("module load samtools", logCommands)
+    
     ######raw
     cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(rawdataDir, sample + '.fastq.1.gz'), '>>', logFile, '2>&1']) 
     log(cmd, logCommands)
