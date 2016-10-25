@@ -66,12 +66,12 @@ for sample in samples:
 
 #   grep "FastQ paired records kept:" >> qualityStats_output.txt
     ######bam
-    cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format bam', jp(bamFolder, sample + '.bam'), '>>', logFile, '2>&1'])
-    log(cmd, logCommands)
+    #cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format bam', jp(bamFolder, sample + '.bam'), '>>', logFile, '2>&1'])
+    #log(cmd, logCommands)
     
     ######Depth of coverage using GATK
-    cmd = ' '.join([gatkCall,  ' -T DepthOfCoverage ', ' -I ' + jp(bamFolder, sample) + ".bam", 
-                     ' -o ' + jp(variantFolder, sample), '>>', logFile, '2>&1'])
-    log(cmd, logCommands)
+    #cmd = ' '.join([gatkCall,  ' -T DepthOfCoverage ', ' -I ' + jp(bamFolder, sample) + ".bam", 
+     #                ' -o ' + jp(variantFolder, sample), '>>', logFile, '2>&1'])
+    #log(cmd, logCommands)
    
     logCommands.close()
