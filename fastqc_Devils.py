@@ -36,7 +36,7 @@ rawdataDir = abspath(args.rawdata)
 cleanDir = abspath('01-Cleaned')
 bamFolder = abspath('02-Mapped')
 variantFolder = abspath('03-Calls')
-resultsDir = abspath('fastqc')
+resultsDir = abspath('fastqc_scripts')
 
 os.system('mkdir -p %s' % resultsDir)
 
@@ -45,7 +45,7 @@ for sample in samples:
     print "Processing", sample, "....."
     # Set up files:
     logFile = jp(resultsDir, sample + '_fastqc.log')
-    logCommands = open(jp(resultsDir, sample + '_fastqc_commands.log'), 'w')
+    logCommands = open(jp(resultsDir, sample + '_fastqc_commands.sh'), 'w')
 
     ######raw
     cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(rawdataDir, sample + '.fastq.1.gz'), '>>', logFile, '2>&1']) 
