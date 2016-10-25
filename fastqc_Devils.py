@@ -60,6 +60,8 @@ for sample in samples:
     log("module load python/2.7.10", logCommands)
     log("module load grc", logCommands)
     log("module load samtools", logCommands)
+    log("module load fastqc", logCommands)
+
     
     ######raw
     cmd = ' '.join(['fastqc', '--outdir', resultsDir, '--format fastq', jp(rawdataDir, sample + '.fastq.1.gz'), '>>', logFile, '2>&1']) 
