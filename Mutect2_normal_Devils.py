@@ -63,7 +63,7 @@ for normalsample in normalsamples:
     log('#PBS -o %s_job.log' % normalsample, logCommands)
     log('#PBS -m abe', logCommands)
     log('#PBS -M shendri4@gmail.com', logCommands)
-    log('#PBS -q short', logCommands)
+    log('#PBS -q reg', logCommands)
     log('#PBS -l mem=100gb', logCommands)
     log(". /usr/modules/init/bash", logCommands)
     log("module load python/2.7.10", logCommands)
@@ -71,7 +71,7 @@ for normalsample in normalsamples:
 
 ####################
 #Normal-only calling for panel of normals (PON) creation
-    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:normal ' + jp(bamFolder, normalsample) + '_markdup_BQSR_FIXED.bam',
+    cmd = ' '.join([gatkCall, ' -nct 24 ', ' -T MuTect2 ', ' -I:normal ' + jp(bamFolder, normalsample) + '.bam',
     '  --artifact_detection_mode ', ' -o ' + jp(variantFolder, normalsample) +  '.vcf', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     #' --dbsnp ' + knownSites, 
