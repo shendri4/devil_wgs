@@ -135,7 +135,7 @@ for sample in samples:
 #     os.system(cmd)
 # 
 #     Compress cleaned files:
-    cmd = ' '.join(['gzip', jp(resultsDir, '*.fastq')])
+    cmd = ' '.join(['gzip', jp(resultsDir, sample + '*.fastq')])
     log(cmd, logCommands)
 #     os.system(cmd)
 # 
@@ -177,7 +177,7 @@ for sample in samples:
 #     os.system(cmd)
 # 
 #     Clean up sam files:
-    cmd = ' '.join(['rm', jp(bamFolder, "*.sam")])
+    cmd = ' '.join(['rm', jp(bamFolder, sample + "*.sam")])
     log(cmd, logCommands)
 #     os.system(cmd)
     
