@@ -32,7 +32,7 @@ normalsamples = []
 for l in open(args.normalsamples):
     if len(l) > 1:
         normalsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
-#print normalsamples
+print normalsamples
 
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
