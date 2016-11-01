@@ -69,7 +69,7 @@ for normalsample in normalsamples:
     #HaplotypeCaller on each sample BAM file 
     #(if a sample's data is spread over more than one BAM, then pass them all in together) to create single-sample gVCFs
     #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
-    cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, sample) + '.bam', ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, sample) + '.raw.snps.indels.g.vcf', '>>', logFile, '2>&1'])
+    cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, normalsample) + '.bam', ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '.raw.snps.indels.g.vcf', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     #os.system(cmd)
 
