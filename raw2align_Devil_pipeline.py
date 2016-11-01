@@ -161,7 +161,7 @@ for sample in samples:
     cmd = ' '.join(['samtools view', jp(bamFolder, sample + "_SE.sam"), '>>', jp(bamFolder, sample + ".sam")])
     log(cmd, logCommands)
 #     os.system(cmd)
-    cmd = ' '.join(['samtools view -bS', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam"])
+    cmd = ' '.join(['samtools view -bS -@ 30', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam", ' -@ 30'])
     log(cmd, logCommands)
 #     os.system(cmd)
 # 
