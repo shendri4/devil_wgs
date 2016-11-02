@@ -42,6 +42,7 @@ variantFolder = abspath('03-Calls')
 PBS_scripts = abspath('GATK_PBS_scripts')
 normal_PBS_scripts = abspath('GATK_PBS_scripts/normal_PBS_scripts')
 bwaIndex = abspath(args.bwaindex)
+intervalPath = abspath(args.intervals)
 gatkCall = 'java -jar /opt/modules/biology/gatk/3.5/bin/GenomeAnalysisTK.jar -R %s' % bwaIndex
 
 os.system('mkdir -p %s' % bamFolder)
@@ -77,7 +78,7 @@ for normalsample in normalsamples:
         #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
         cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, normalsample) + '.bam',
         ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '_chr' + str(chromosome) + '.raw.snps.indels.g.vcf',
-        ' -L chr' + jp(intervals + 'chr' + str(chromosome) + '.intervals'),
+        ' -L chr' + jp(intervalPath, 'chr' + str(chromosome)) + '.intervals',
         '>>', logFile, '2>&1'])
         log(cmd, logCommands)
 
