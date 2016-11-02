@@ -49,7 +49,7 @@ os.system('mkdir -p %s' % normal_PBS_scripts)
 
 ##### Run pipeline ###
 
-for index in xrange(0,len(chromosomes)):    
+for index in xrange(0,len(normalsamples)):    
     chromosome=chromosomes[index]
     normalsample=normalsamples[index]
     
