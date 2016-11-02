@@ -77,7 +77,7 @@ for index in xrange(0,len(chromosomes)):
     #(if a sample's data is spread over more than one BAM, then pass them all in together) to create single-sample gVCFs
     #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
     cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, normalsample) + '.bam',
-    ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '.raw.snps.indels.g.vcf', ' -L chr' + chromosome,
+    ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '.raw.snps.indels.g.vcf', ' -L chr' + str(chromosome),
     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
     #os.system(cmd)
