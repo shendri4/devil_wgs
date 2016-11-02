@@ -78,7 +78,7 @@ for normalsample in normalsamples:
         #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
         cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, normalsample) + '.bam',
         ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '_chr' + str(chromosome) + '.raw.snps.indels.g.vcf',
-        ' -L chr' + jp(intervalPath, 'chr' + str(chromosome)) + '.intervals',
+        ' -L ' + jp(intervalPath, 'chr' + str(chromosome)) + '.intervals',
         '>>', logFile, '2>&1'])
         log(cmd, logCommands)
 
