@@ -56,7 +56,7 @@ for index in xrange(0,len(chromosomes)):
 #for normalsample in normalsamples:
     print "Processing", normalsample, "....."
     # Set up files:
-    logFile = jp(variantFolder, normalsample, + '_normal_mutect.log')
+    logFile = jp(variantFolder, normalsample + '_normal_mutect.log')
     logCommands = open(jp(jp(normal_PBS_scripts, normalsample) + chromosome + '_normal_mutect_commands.sh'), 'w')
 
     #Setup for qsub
