@@ -4,6 +4,7 @@
 
 #-s test_normalsamples.txt
 #-b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa
+#-i /mnt/lfs2/hend6746/devils/reference/
 
 from os.path import join as jp
 from os.path import abspath
@@ -76,7 +77,7 @@ for normalsample in normalsamples:
         #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
         cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, normalsample) + '.bam',
         ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '_chr' + str(chromosome) + '.raw.snps.indels.g.vcf',
-        ' -L chr' + jp(intervals + 'chr' + str(chromosome) + '.intervals')
+        ' -L chr' + jp(intervals + 'chr' + str(chromosome) + '.intervals'),
         '>>', logFile, '2>&1'])
         log(cmd, logCommands)
 
