@@ -14,6 +14,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('-s', "--normalsamples", help="Normal samples.txt file with sample ID.", required=True)
 parser.add_argument('-b', "--bwaindex", help="Path to bwa index file.", required=True)
+parser.add_argument('-i', "--intervals", help="Path to chromosome intervals", required=True)
 args = parser.parse_args()
 
 VERBOSE=False
@@ -75,7 +76,7 @@ for normalsample in normalsamples:
         #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
         cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, normalsample) + '.bam',
         ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '_chr' + str(chromosome) + '.raw.snps.indels.g.vcf',
-        ' -L chr' + str(chromosome),
+        ' -L chr' + jp(intervals + 'chr' + str(chromosome) + '.intervals')
         '>>', logFile, '2>&1'])
         log(cmd, logCommands)
 
