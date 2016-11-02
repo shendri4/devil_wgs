@@ -51,33 +51,32 @@ os.system('mkdir -p %s' % normal_PBS_scripts)
     
 for normalsample in normalsamples:
     print "Processing", normalsample, "....."
-    # Set up files:
-    logFile = jp(variantFolder, normalsample + '_normal_mutect.log')
-    logCommands = open(''.join([jp(normal_PBS_scripts, normalsample), str(chromosome), '_normal_mutect_commands.sh']), 'w')
-
-    #Setup for qsub
-    log('#!/bin/bash', logCommands)
-    log('#PBS -N %s' % normalsample, logCommands)
-    log('#PBS -j oe', logCommands)
-    log('#PBS -o %s_job.log' % normalsample, logCommands)
-    log('#PBS -m abe', logCommands)
-    log('#PBS -M shendri4@gmail.com', logCommands)
-    log('#PBS -q reg', logCommands)
-    log('#PBS -l mem=100gb', logCommands)
-    log(". /usr/modules/init/bash", logCommands)
-    log("module load python/2.7.10", logCommands)
-    log("module load grc", logCommands)
-
-    ###########Per-Sample Variant Calling
-    #HaplotypeCaller on each sample BAM file 
-    #(if a sample's data is spread over more than one BAM, then pass them all in together) to create single-sample gVCFs
-    #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
     for chromosome in chromosomes:
+    # Set up files:
+        logFile = jp(variantFolder, normalsample + '_normal_mutect.log')
+        logCommands = open(''.join([jp(normal_PBS_scripts, normalsample), str(chromosome), '_normal_mutect_commands.sh']), 'w')
+
+        #Setup for qsub
+        log('#!/bin/bash', logCommands)
+        log('#PBS -N %s' % normalsample, logCommands)
+        log('#PBS -j oe', logCommands)
+        log('#PBS -o %s_job.log' % normalsample, logCommands)
+        log('#PBS -m abe', logCommands)
+        log('#PBS -M shendri4@gmail.com', logCommands)
+        log('#PBS -q reg', logCommands)
+        log('#PBS -l mem=100gb', logCommands)
+        log(". /usr/modules/init/bash", logCommands)
+        log("module load python/2.7.10", logCommands)
+        log("module load grc", logCommands)
+
+        ###########Per-Sample Variant Calling
+        #HaplotypeCaller on each sample BAM file 
+        #(if a sample's data is spread over more than one BAM, then pass them all in together) to create single-sample gVCFs
+        #not recommended for somatic (cancer) variant discovery. For that purpose, use MuTect2 instead
         cmd = ' '.join([gatkCall, ' -T HaplotypeCaller ', ' -I ' + jp(bamFolder, normalsample) + '.bam',
         ' --emitRefConfidence GVCF ', ' -o ' + jp(variantFolder, normalsample) + '.raw.snps.indels.g.vcf',
         ' -L chr' + str(chromosome),
         '>>', logFile, '2>&1'])
         log(cmd, logCommands)
-    #os.system(cmd)
 
 logCommands.close()
