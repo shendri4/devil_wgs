@@ -32,7 +32,7 @@ for l in open(args.normalsamples):
         normalsamples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
 print normalsamples
 
-chromosomes = [01,02,03,04,05,06]
+chromosomes = ['01','02','03','04','05','06']
 
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
