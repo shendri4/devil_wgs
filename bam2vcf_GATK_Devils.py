@@ -54,7 +54,7 @@ for normalsample in normalsamples:
     for chromosome in chromosomes:
     # Set up files:
         logFile = jp(variantFolder, normalsample + '_normal_mutect.log')
-        logCommands = open(''.join([jp(normal_PBS_scripts, normalsample), str(chromosome), '_normal_mutect_commands.sh']), 'w')
+        logCommands = open(''.join([jp(normal_PBS_scripts, normalsample), '_' + str(chromosome), '_normal_mutect_commands.sh']), 'w')
 
         #Setup for qsub
         log('#!/bin/bash', logCommands)
