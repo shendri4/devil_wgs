@@ -53,7 +53,7 @@ for normalsample in normalsamples:
     print "Processing", normalsample, "....."
     for chromosome in chromosomes:
     # Set up files:
-        logFile =''.join([jp(normal_PBS_scripts, normalsample), '_chr' + str(chromosome), '_normal_mutect.log')
+        logFile =''.join([jp(normal_PBS_scripts, normalsample), '_chr' + str(chromosome), '_normal_mutect.log'])
         logCommands = open(''.join([jp(normal_PBS_scripts, normalsample), '_chr' + str(chromosome), '_normal_mutect_commands.sh']), 'w')
 
         #Setup for qsub
