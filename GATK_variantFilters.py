@@ -111,7 +111,8 @@ cmd = ' '.join([gatkCall, ' -T VariantFiltration ',
 '>>', logFile, '2>&1'])
 log(cmd, logCommands)
 
-# the DP threshold should be set a 5 or 6 sigma from the mean coverage across all samples, so that the DP > X threshold eliminates sites with excessive coverage caused by alignment artifacts.
+# the DP threshold should be set a 5 or 6 sigma from the mean coverage across all samples, 
+# so that the DP > X threshold eliminates sites with excessive coverage caused by alignment artifacts.
 
 ###########################################################################
 #### Exclude non-variant loci and filtered loci (trim remaining alleles by default):
