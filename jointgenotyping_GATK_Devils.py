@@ -39,6 +39,7 @@ for l in open(args.samples):
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
 variantFolder = abspath('03-Calls')
+jointFolder = abspath('04-Joint_Calls')
 PBS_scripts = abspath('joint_GATK_PBS_scripts')
 #rawdataDir = abspath(args.rawdata)
 bwaIndex = abspath(args.bwaindex)
@@ -47,6 +48,7 @@ gatkCall = 'java -jar /opt/modules/biology/gatk/3.5/bin/GenomeAnalysisTK.jar -R 
 os.system('mkdir -p %s' % bamFolder)
 os.system('mkdir -p %s' % variantFolder)
 os.system('mkdir -p %s' % PBS_scripts)
+os.system('mkdir -p %s' % jointFolder)
 
 logFile = jp(variantFolder, 'chr' + args.chromosome + '_joint_GATK.log')
 logCommands = open(jp(PBS_scripts, 'chr' + args.chromosome + '_joint_commands.sh'), 'w')
@@ -73,7 +75,7 @@ for sample in samples:
 variantList = ' '.join(str(x) for x in variants)
 print variantList
 ###########Joint Genotyping
-cmd = ' '.join([gatkCall, ' -T GenotypeGVCFs ', variantList, ' -o ' + jp(variantFolder, 'chr' + args.chromosome + '_joint_variants.vcf'), '>>', logFile, '2>&1'])
+cmd = ' '.join([gatkCall, ' -T GenotypeGVCFs ', variantList, ' -o ' + jp(jointFolder, 'chr' + args.chromosome + '_joint_variants.vcf'), '>>', logFile, '2>&1'])
 log(cmd, logCommands)
 #os.system(cmd)
 
