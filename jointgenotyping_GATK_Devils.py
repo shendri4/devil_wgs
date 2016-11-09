@@ -53,9 +53,9 @@ logCommands = open(jp(PBS_scripts, 'joint_commands.sh'), 'w')
 
 #Setup for qsub
 log('#!/bin/bash', logCommands)
-log('#PBS -N joint_%s' % (chromosome), logCommands)
+log('#PBS -N joint_%s' % (args.chromosome), logCommands)
 log('#PBS -j oe', logCommands)
-log('#PBS -o joint_%s_job.log' % (chromosome), logCommands)
+log('#PBS -o joint_%s_job.log' % (args.chromosome), logCommands)
 log('#PBS -m abe', logCommands)
 log('#PBS -M shendri4@gmail.com', logCommands)
 log('#PBS -q reg', logCommands)
