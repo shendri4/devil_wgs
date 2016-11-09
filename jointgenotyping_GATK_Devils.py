@@ -35,7 +35,7 @@ samples = []
 for l in open(args.samples):
     if len(l) > 1:
         samples.append(l.split('/')[-1].replace('_R1_001.fastq.gz', '').strip())
-
+print samples
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
 variantFolder = abspath('03-Calls')
@@ -76,6 +76,5 @@ print variantList
 cmd = ' '.join([gatkCall, ' -T GenotypeGVCFs ', variantList, ' -o ' + jp(variantFolder, 'joint_variants.vcf'), '>>', logFile, '2>&1'])
 log(cmd, logCommands)
 #os.system(cmd)
-    
-    
+
 logCommands.close()
