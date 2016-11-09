@@ -34,8 +34,8 @@ def log(txt, out):
 samples = []
 for l in open(args.samples):
     if len(l) > 1:
-        samples.append(l.split('/')[-1].replace('_R1_001.fastq.gz', '').strip())
-print samples
+        samples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
+
 # Setup folders and paths variables:
 bamFolder = abspath('02-Mapped')
 variantFolder = abspath('03-Calls')
