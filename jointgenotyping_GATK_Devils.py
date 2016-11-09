@@ -44,7 +44,6 @@ PBS_scripts = abspath('joint_GATK_PBS_scripts')
 bwaIndex = abspath(args.bwaindex)
 gatkCall = 'java -jar /opt/modules/biology/gatk/3.5/bin/GenomeAnalysisTK.jar -R %s' % bwaIndex
 
-
 os.system('mkdir -p %s' % bamFolder)
 os.system('mkdir -p %s' % variantFolder)
 os.system('mkdir -p %s' % PBS_scripts)
@@ -54,9 +53,9 @@ logCommands = open(jp(PBS_scripts, 'joint_commands.sh'), 'w')
 
 #Setup for qsub
 log('#!/bin/bash', logCommands)
-log('#PBS -N joint', logCommands)
+log('#PBS -N joint_%s' % (chromosome), logCommands)
 log('#PBS -j oe', logCommands)
-log('#PBS -o joint_job.log', logCommands)
+log('#PBS -o joint_%s_job.log' % (chromosome), logCommands)
 log('#PBS -m abe', logCommands)
 log('#PBS -M shendri4@gmail.com', logCommands)
 log('#PBS -q reg', logCommands)
