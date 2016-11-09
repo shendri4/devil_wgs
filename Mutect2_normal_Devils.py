@@ -4,7 +4,7 @@
 
 #-s test_normalsamples.txt
 #-b /mnt/lfs2/hend6746/devils/reference/sarHar1.fa
-
+# is git work right now?
 from os.path import join as jp
 from os.path import abspath
 import os
