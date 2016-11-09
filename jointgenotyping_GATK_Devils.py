@@ -48,7 +48,7 @@ os.system('mkdir -p %s' % bamFolder)
 os.system('mkdir -p %s' % variantFolder)
 os.system('mkdir -p %s' % PBS_scripts)
 
-logFile = jp(variantFolder, 'joint_GATK.log')
+logFile = jp(variantFolder, 'chr' + args.chromosome + '_joint_GATK.log')
 logCommands = open(jp(PBS_scripts, 'chr' + args.chromosome + '_joint_commands.sh'), 'w')
 
 #Setup for qsub
@@ -73,7 +73,7 @@ for sample in samples:
 variantList = ' '.join(str(x) for x in variants)
 print variantList
 ###########Joint Genotyping
-cmd = ' '.join([gatkCall, ' -T GenotypeGVCFs ', variantList, ' -o ' + jp(variantFolder, 'chr' + args.chromosome + 'joint_variants.vcf'), '>>', logFile, '2>&1'])
+cmd = ' '.join([gatkCall, ' -T GenotypeGVCFs ', variantList, ' -o ' + jp(variantFolder, 'chr' + args.chromosome + '_joint_variants.vcf'), '>>', logFile, '2>&1'])
 log(cmd, logCommands)
 #os.system(cmd)
 
