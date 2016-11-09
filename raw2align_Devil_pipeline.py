@@ -141,6 +141,9 @@ for sample in samples:
 # 
 #     Run BWA to map samples, combine sam files, sort
 #     -t number of threads -R read group header
+# | bwa to samtools view -bS -@ # 
+# samtools merge PE and SE -o .bam
+# samtools sort
     logFile = jp(bamFolder, sample + '_mapping.log')
     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
                     bwaIndex, jp(resultsDir, sample + "_cleaned_PE1.fastq.gz"),
@@ -161,6 +164,10 @@ for sample in samples:
     cmd = ' '.join(['samtools view', jp(bamFolder, sample + "_SE.sam"), '>>', jp(bamFolder, sample + ".sam")])
     log(cmd, logCommands)
 #     os.system(cmd)
+    #make sure there can be lots of files or it will not be able to handle the bam sort
+    cmd =' '.join(['ulimit -n 2048'])
+    log(cmd, logCommands)
+    
     cmd = ' '.join(['samtools view -bS -@ 30', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam", ' -@ 30'])
     log(cmd, logCommands)
 #     os.system(cmd)
@@ -177,8 +184,8 @@ for sample in samples:
 #     os.system(cmd)
 # 
 #     Clean up sam files:
-    cmd = ' '.join(['rm', jp(bamFolder, sample + "*.sam")])
-    log(cmd, logCommands)
+#    cmd = ' '.join(['rm', jp(bamFolder, sample + "*.sam")])
+#    log(cmd, logCommands)
 #     os.system(cmd)
     
     logCommands.close()
