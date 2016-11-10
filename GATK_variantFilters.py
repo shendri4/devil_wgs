@@ -88,20 +88,6 @@ cmd = ' '.join([gatkCall, ' -T VariantFiltration ',
 '>>', logFile, '2>&1'])
 log(cmd, logCommands)
 
-	--variant:VCF ${PROJ_DIR}/nonfiltered_allsites_93ind.recode.vcf \
-	--filterName "BadSNP-QD"  \
-	--filterExpression "(vc.getType().toString().equals('SNP') || vc.getType().toString().equals('MNP')) && (QD < 2.0)" \
-	--filterName "BadSNP-MQ" \
-	--filterExpression "(vc.getType().toString().equals('SNP') || vc.getType().toString().equals('MNP')) && (MQ < 40.0)" \
-	--filterName "BadSNP-SOR" \
-	--filterExpression "(vc.getType().toString().equals('SNP') || vc.getType().toString().equals('MNP')) && (SOR > 3.0)" \
-	--filterName "BadSNP-FS" \
-	--filterExpression "(vc.getType().toString().equals('SNP') || vc.getType().toString().equals('MNP')) && (FS > 60)" \
-	--filterName "BadSNP-MQRankSum" \
-	--filterExpression "(vc.getType().toString().equals('SNP') || vc.getType().toString().equals('MNP')) && (MQRankSum < -12.5)" \
-	--filterName "BadSNP-ReadPosRankSum" \
-	--filterExpression "(vc.getType().toString().equals('SNP') || vc.getType().toString().equals('MNP')) && (ReadPosRankSum < -8.0)" \
-
 #### GQ20
 cmd = ' '.join([gatkCall, ' -T VariantFiltration ', 
 ' -o ' + jp(variantFolder, variant + '_GQ20_filtered_SNPs.vcf'), 
