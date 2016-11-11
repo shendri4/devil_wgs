@@ -50,7 +50,7 @@ os.system('mkdir -p %s' % variantFolder)
 os.system('mkdir -p %s' % PBS_scripts)
 os.system('mkdir -p %s' % jointFolder)
 
-logFile = jp(variantFolder, 'chr' + args.chromosome + '_joint_GATK.log')
+logFile = jp(jointFolder, 'chr' + args.chromosome + '_joint_GATK.log')
 logCommands = open(jp(PBS_scripts, 'chr' + args.chromosome + '_joint_commands.sh'), 'w')
 
 #Setup for qsub
