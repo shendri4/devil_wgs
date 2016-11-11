@@ -87,7 +87,7 @@ for variant in variants:
 	#### High quality filters
 	#### Filter variant sites from raw variants
 	cmd = ' '.join([gatkCall, ' -T VariantFiltration ', 
-	' -V ' + jp(variantFolder, variant + '_raw_SNPs.vcf'), 
+	' -V ' + jp(jointFolder, variant + '_raw_SNPs.vcf'), 
 	' -o ' + jp(filteredFolder, variant + '_filtered_SNPs.vcf'), 
 	' --filterExpression "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0" ', 
 	' --filterName "BadSNP" ',
@@ -98,8 +98,8 @@ for variant in variants:
 	cmd = ' '.join([gatkCall, ' -T VariantFiltration ', 
 	' -o ' + jp(filteredFolder, variant + '_GQ20_filtered_SNPs.vcf'), 
 	' -V ' + jp(filteredFolder, variant + '_filtered_SNPs.vcf'), 
-	' G_filter "GQ < 20.0" ',
-	' G_filterName lowGQ ',
+	' -G_filter "GQ < 20.0" ',
+	' -G_filterName "lowGQ" ',
 	'>>', logFile, '2>&1'])
 	log(cmd, logCommands)
 
@@ -110,8 +110,8 @@ for variant in variants:
 	#### Exclude non-variant loci and filtered loci (trim remaining alleles by default):
 	cmd = ' '.join([gatkCall, ' -T SelectVariants ', 
 	' -o ' + jp(filteredFolder, variant + '_selected_GQ20_filtered_SNPs.vcf'), 
-	' -V ' + jp(filteredFolder, variant + '_GQ20_filtered_SNPs.vcf'), 
-	' --excludeNonVariants ', ' --excludeFiltered ',
+	'  -V ' + jp(filteredFolder, variant + '_GQ20_filtered_SNPs.vcf'), 
+	' --excludeNonVariants', ' --excludeFiltered',
 	'>>', logFile, '2>&1'])
 	log(cmd, logCommands)
 
@@ -122,7 +122,7 @@ for variant in variants:
 	cmd = ' '.join([gatkCall, ' -T VariantEval ', 
 	' -o ' + jp(filteredFolder, variant + '_selected_GQ20_filtered_SNPs.eval.gatkreport.grp'), 
 	' --eval: ' + jp(filteredFolder, variant + '_selected_GQ20_filtered_SNPs.vcf'), 
-	' --doNotUseAllStandardStratifications ', ' --doNotUseAllStandardModules ',
+	' --doNotUseAllStandardStratifications', ' --doNotUseAllStandardModules',
 	' --evalModule CountVariants ',
 	' --evalModule TiTvVariantEvaluator ',
 	' --stratificationModule CompRod ',
