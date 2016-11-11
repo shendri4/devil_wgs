@@ -53,9 +53,9 @@ for variant in variants:
 
 	#Setup for qsub
 	log('#!/bin/bash', logCommands)
-	log('#PBS -N %s_filter', % variant, logCommands)
+	log('#PBS -N %s_filter' % variant, logCommands)
 	log('#PBS -j oe', logCommands)
-	log('#PBS -o %s_filter_job.log', % variant, logCommands)
+	log('#PBS -o %s_filter_job.log' % variant, logCommands)
 	log('#PBS -m abe', logCommands)
 	log('#PBS -M shendri4@gmail.com', logCommands)
 	log('#PBS -q reg', logCommands)
