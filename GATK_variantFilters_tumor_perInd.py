@@ -67,27 +67,27 @@ for variant in variants:
 	################################## 
 	## Evaluate all raw variants in file to see quality of variants before filters are applied (OPTIONAL)
 	################################## 
-	cmd = ' '.join([gatkCall, ' -T VariantEval ', 
-	' -o ' + jp(variantFolder, variant + '.raw.eval.gatkreport.grp'), 
-	' --eval: ' + jp(variantFolder, variant + '.vcf'), 
-	' --doNotUseAllStandardStratifications ', ' --doNotUseAllStandardModules ', ' --evalModule CountVariants ',
-	'>>', logFile, '2>&1'])
-	log(cmd, logCommands)
+# 	cmd = ' '.join([gatkCall, ' -T VariantEval ', 
+# 	' -o ' + jp(variantFolder, variant + '.raw.eval.gatkreport.grp'), 
+# 	' --eval: ' + jp(variantFolder, variant + '.vcf'), 
+# 	' --doNotUseAllStandardStratifications ', ' --doNotUseAllStandardModules ', ' --evalModule CountVariants ',
+# 	'>>', logFile, '2>&1'])
+# 	log(cmd, logCommands)
 
 	###########################################################################
 	#### Extract the SNPs from the call set
-	cmd = ' '.join([gatkCall, ' -T SelectVariants ', 
-	' -o ' + jp(variantFolder, variant + '_raw_SNPs.vcf'), 
-	' -V ' + jp(variantFolder, variant + '.vcf'), 
-	' -selectType SNP ',
-	'>>', logFile, '2>&1'])
-	log(cmd, logCommands)
+# 	cmd = ' '.join([gatkCall, ' -T SelectVariants ', 
+# 	' -o ' + jp(variantFolder, variant + '_raw_SNPs.vcf'), 
+# 	' -V ' + jp(variantFolder, variant + '.vcf'), 
+# 	' -selectType SNP ',
+# 	'>>', logFile, '2>&1'])
+# 	log(cmd, logCommands)
 
 	###########################################################################
 	#### High quality filters
 	#### Filter variant sites from raw variants
 	cmd = ' '.join([gatkCall, ' -T VariantFiltration ', 
-	' -V ' + jp(variantFolder, variant + '_raw_SNPs.vcf'), 
+	' -V ' + jp(variantFolder, variant + '.vcf'), 
 	' -o ' + jp(filteredFolder, variant + '_filtered_SNPs.vcf'), 
 	' --filterExpression "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0" ', 
 	' --filterName "BadSNP" ',
