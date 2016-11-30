@@ -48,8 +48,8 @@ os.system('mkdir -p %s' % PBS_scripts)
 for variant in variants:
 	print "Processing", variant, "....."
 	# Set up files:
-	logFile = jp(filteredFolder, variant + '_GATK_filter.log')
-	logCommands = open(jp(PBS_scripts, variant + '_GATK_filter_commands.sh'), 'w')
+	logFile = jp(filteredFolder, variant + '_GATK_DP_filter.log')
+	logCommands = open(jp(PBS_scripts, variant + '_GATK_DP_filter_commands.sh'), 'w')
 
 	#Setup for qsub
 	log('#!/bin/bash', logCommands)
