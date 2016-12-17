@@ -38,7 +38,6 @@ for l in open(args.samples):
     if len(l) > 1:
         samples.append(l.split('/')[-1].replace('.fastq.1.gz', '').strip())
 
-
 # Setup folders and paths variables:
 resultsDir = abspath('01-Cleaned')
 bamFolder = abspath('02-Mapped')
@@ -73,102 +72,86 @@ for sample in samples:
     log("module load python/2.7.10", logCommands)
     log("module load bwa", logCommands)
     log("module load grc", logCommands)
-    log("module load samtools", logCommands)
 
-    # First run superdeduper
-    # David said don't run the compression (16Sep21)
-    # DStreett ran SD on files on petunia(or whale) because required 0.5Tb of RAM?
-#     cmd = ' '.join(['super_deduper -1', jp(rawdataDir, sample + '.fastq.1.gz'),
-#                     '-2', jp(rawdataDir, sample + '.fastq.2.gz'), '-p', jp(resultsDir, sample + '_sd'),
-#                     '>>', logFile, '2>&1'])
-#     log(cmd, logCommands)
-#     cmd = ' '.join(['super_deduper -1', jp(rawdataDir, sample + '.fastq.1.gz'),
-#                     '-2', jp(rawdataDir, sample + '.fastq.2.gz'), '-p', jp(resultsDir, sample + '_sd'),
-#                     '>>', logFile, '2>&1'])
-#     log(cmd, logCommands)
-#     
-#ln -s file /mnt/lfs2/stre3949/Sarah/filename .
-
-    # Second run flash2
-    # the --max-overlap was set to 600, but that seems really long; default is 65, try 300
-    # --max-overlap 400 --min-overlap 15 --max-mismatch-density .10 --min-overlap-outie 35 --percent-cutoff 25
+# Second run flash2
+# the --max-overlap was set to 600, but that seems really long; default is 65, try 300
+# --max-overlap 400 --min-overlap 15 --max-mismatch-density .10 --min-overlap-outie 35 --percent-cutoff 25
     cmd = ' '.join(['flash2 --max-overlap 300 --allow-outies --threads 7', ' -d ', resultsDir, ' -o ', jp(sample + '_flash'),
                     jp(rawdataDir, sample + '.fastq.1.gz'), jp(rawdataDir, sample + '.fastq.2.gz'),
                     '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
-#     Third run sickle
-#     The --length-threshold was set to 200, but that seems really long; default is 20
+# Third run sickle
+# The --length-threshold was set to 200, but that seems really long; default is 20
     cmd = ' '.join(['sickle pe --length-threshold 20 --qual-threshold 25 --qual-type sanger -f', jp(resultsDir, sample + '_flash.notCombined_1.fastq'),
                     '-r', jp(resultsDir, sample + '_flash.notCombined_2.fastq'),
                     '--output-pe1', jp(resultsDir, sample + '_sickle_PE1.fastq'),
                     '--output-pe2', jp(resultsDir, sample + '_sickle_PE2.fastq'),
                     '--output-single', jp(resultsDir, sample + '_sickle_SE.fastq'), '>>', logFile, '2>&1'])
     log(cmd, logCommands)# 
-# 
-#     Combine SE files:
+
+# Combine SE files:
     cmd = ' '.join(['cat', jp(resultsDir, sample + '_sickle_SE.fastq'), jp(resultsDir, sample + '_flash.extendedFrags.fastq'),
                     '>', jp(resultsDir, sample + "_cleaned_SE.fastq")])
     log(cmd, logCommands)
-# 
-#     Rename PE and SE files to something nicer:
+
+# Rename PE and SE files to something nicer:
     cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE1.fastq"), jp(resultsDir, sample + "_cleaned_PE1.fastq")])
     log(cmd, logCommands)
 
     cmd = ' '.join(['mv', jp(resultsDir, sample + "_sickle_PE2.fastq"), jp(resultsDir, sample + "_cleaned_PE2.fastq")])
     log(cmd, logCommands)
-# 
-#     Clean up intermediary files:
+
+# Clean up intermediary files:
      cmd = ' '.join(['rm', jp(resultsDir, sample + "_sd*"), jp(resultsDir, sample + "_sickle*"), jp(resultsDir, sample + "_flash.extendedFrags.fastq")])
      log(cmd, logCommands)
-# 
-#     Compress cleaned files:
+
+# Compress cleaned files:
     cmd = ' '.join(['gzip', jp(resultsDir, sample + '*.fastq')])
     log(cmd, logCommands)
-# 
+
 #     Run BWA to map samples, combine sam files, sort
-#     -t number of threads -R read group header
-# | bwa to samtools view -bS -@ # 
-# samtools merge PE and SE -o .bam
-# samtools sort
-    logFile = jp(bamFolder, sample + '_mapping.log')
+#     logFile = jp(bamFolder, sample + '_mapping.log')
+#     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
+#                     bwaIndex, jp(resultsDir, sample + "_cleaned_PE1.fastq.gz"),
+#                     jp(resultsDir, sample + "_cleaned_PE2.fastq.gz"), ">", jp(bamFolder, sample + "_PE.sam"),
+#                     "2>", logFile])
+#     log(cmd, logCommands)
+
+# Run BWA to map PE samples to reference genome (make sure ref is properly formated (see top of script))
+# -t number of threads -R read group header
+    logFile = jp(resultsDir, sample + '_mapping.log')
     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
                     bwaIndex, jp(resultsDir, sample + "_cleaned_PE1.fastq.gz"),
-                    jp(resultsDir, sample + "_cleaned_PE2.fastq.gz"), ">", jp(bamFolder, sample + "_PE.sam"),
+                    jp(resultsDir, sample + "_cleaned_PE2.fastq.gz"), "| samtools view -bS -@ 30 -o", jp(bamFolder, sample) + "PE.bam"
                     "2>", logFile])
     log(cmd, logCommands)
 
+# Run BWA to map SE samples to reference genome (make sure ref is properly formated (see top of script))
     cmd = ' '.join(["bwa mem -t 16 -R '@RG\tID:bwa\tSM:" + sample + "\tPL:ILLUMINA'",
-                    bwaIndex, jp(resultsDir, sample + "_cleaned_SE.fastq.gz"), ">>", jp(bamFolder, sample + "_SE.sam"),
+                    bwaIndex, jp(resultsDir, sample + "_cleaned_SE.fastq.gz"), "| samtools view -bS -@ 30 -o", jp(bamFolder, sample + "_SE.bam"),
                     "2>>", logFile])
     log(cmd, logCommands)
-# 
-#     merge and sort
-    cmd = ' '.join(['cat', jp(bamFolder, sample + "_PE.sam"), '>', jp(bamFolder, sample + ".sam")])
+
+# merge and sort
+    cmd = ' '.join(['samtools merge -c', jp(bamFolder, sample + ".bam"), jp(bamFolder, sample + "PE.bam"), jp(bamFolder, sample + "SE.bam")])
     log(cmd, logCommands)
 
-    cmd = ' '.join(['samtools view', jp(bamFolder, sample + "_SE.sam"), '>>', jp(bamFolder, sample + ".sam")])
-    log(cmd, logCommands)
-
-    #make sure there can be lots of files or it will not be able to handle the bam sort
+# make sure there can be lots of files or it will not be able to handle the samtools sort
     cmd =' '.join(['ulimit -n 2048'])
     log(cmd, logCommands)
     
-    cmd = ' '.join(['samtools view -bS -@ 30', jp(bamFolder, sample + ".sam"), '| samtools sort - -o', jp(bamFolder, sample) + ".bam", ' -@ 30'])
+# sort bam file; -@ number of threads
+    cmd = ' '.join(['samtools sort -o', jp(bamFolder, sample) + "sorted.bam", ' -@ 30', jp(bamFolder, sample + ".bam")])
     log(cmd, logCommands)
-# 
+
 # Mark PCR duplicates (remove duplicates, if desired)
-    cmd = ' '.join([picardCall, ' INPUT=' + jp(bamFolder, sample + ".bam"), ' OUTPUT=' + jp(bamFolder, sample + "_markdup.bam"),
+    cmd = ' '.join([picardCall, ' INPUT=' + jp(bamFolder, sample + "sorted.bam"), ' OUTPUT=' + jp(bamFolder, sample + "_markdup.bam"),
                     ' METRICS_FILE=' + jp(bamFolder, sample + ".metrics"), ' REMOVE_DUPLICATES=true ',
                     ' ASSUME_SORTED=true VALIDATION_STRINGENCY=LENIENT', '>>', logFile, '2>&1'])
     log(cmd, logCommands)
 
-#     Index:
+# Index bam file:
     cmd = ' '.join(['samtools index', jp(bamFolder, sample) + "_markdup.bam"])
-    log(cmd, logCommands)
-# 
-#     Clean up sam files:
-#    cmd = ' '.join(['rm', jp(bamFolder, sample + "*.sam")])
-#    log(cmd, logCommands)
-    
+    log(cmd, logCommands)     
     logCommands.close()
