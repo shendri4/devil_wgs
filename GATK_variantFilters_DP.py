@@ -71,7 +71,6 @@ for variant in variants:
 	' -V ' + jp(jointFolder, variant + '_selected_GQ20_filtered_SNPs.vcf'), 
 	' -o ' + jp(filteredFolder, variant + '_minDP10_maxDP150_GQ20_filtered_SNPs.vcf'), 
 	' --filterExpression "DP < 10.0" ', 
-	' --filterExpression "DP > 150.0" ', 
 	' --filterName "BadSNP" ',
 	'>>', logFile, '2>&1'])
 	log(cmd, logCommands)
